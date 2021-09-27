@@ -3,13 +3,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>mmp-microservices-springboot</artifactId>
+    <artifactId>mmp-microservice-springboot-springcloud-v2</artifactId>
     <groupId>com.packtpub.microservices.springboot</groupId>
     <version>1.0-SNAPSHOT</version>
   </parent>
 
   <groupId>com.packtpub.microservices.springboot.review</groupId>
-  <artifactId>mp-review-service</artifactId>
+  <artifactId>review-service</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <name>Microservice with Spring Boot and Spring Cloud :: Review Service</name>

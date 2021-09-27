@@ -5,13 +5,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <artifactId>mmp-microservices-springboot</artifactId>
+    <artifactId>mmp-microservice-springboot-springcloud-v2</artifactId>
     <groupId>com.packtpub.microservices.springboot</groupId>
     <version>1.0-SNAPSHOT</version>
   </parent>
 
   <groupId>com.packtpub.microservices.springboot.product</groupId>
-  <artifactId>mp-product-service</artifactId>
+  <artifactId>product-service</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
 
