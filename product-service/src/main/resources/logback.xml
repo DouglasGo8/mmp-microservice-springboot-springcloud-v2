@@ -7,10 +7,15 @@
         %boldGreen, %boldYellow, %boldBlue, %boldMagenta, %boldCyan, %boldWhite, %highlight
       -->
       <!--<pattern>faint(%d{yyyy-MM-dd HH:mm:ss.SSS}) %highlight(%-5level) [%-40.40logger{10}] - %msg%n</pattern>-->
-      <pattern>%gray(%d{yyyy-MM-dd HH:mm:ss.SSS}) %highlight(%-5level) %magenta(%thread{10}) [ %cyan(%-25.25logger{24})] - %boldWhite(%msg%n)</pattern>
+      <pattern>%gray(%d{yyyy-MM-dd HH:mm:ss.SSS}) %highlight(%-5level) %magenta(%thread{10}) [ %cyan(%-25.25logger{24})]
+        - %boldWhite(%msg%n)
+      </pattern>
     </encoder>
   </appender>
-  <root level="info" >
+  <logger name="com.packtpub.microservices.springboot.product" level="debug" additivity="false">
+    <appender-ref ref="STDOUT"/>
+  </logger>
+  <root level="info">
     <appender-ref ref="STDOUT"/>
   </root>
 </configuration>

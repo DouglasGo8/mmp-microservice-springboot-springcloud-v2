@@ -10,7 +10,7 @@
 
   <packaging>jar</packaging>
 
-  <groupId>com.packtpub.microservices.springboot.product.api</groupId>
+  <groupId>com.packtpub.microservices.springboot.apis</groupId>
   <artifactId>apis</artifactId>
   <version>1.0-SNAPSHOT</version>
 

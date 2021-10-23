@@ -13,6 +13,21 @@
   <version>1.0-SNAPSHOT</version>
 
   <name>Microservice with Spring Boot and Spring Cloud :: Recommendation Service</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.packtpub.microservices.springboot.apis</groupId>
+      <artifactId>apis</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.packtpub.microservices.springboot.utils</groupId>
+      <artifactId>utils</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+
+  
   <build>
     <plugins>
       <plugin>

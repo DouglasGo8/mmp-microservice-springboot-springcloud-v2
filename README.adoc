@@ -7,6 +7,9 @@ IMPORTANT: Links
 . https://camel.apache.org/[Apache Camel]
 . https://dzone.com/articles/calling-rest-api-from-camel-route[Calling REST APIs From Camel Routes]
 . https://github.com/PacktPublishing/Microservices-with-Spring-Boot-and-Spring-Cloud-2E[Microservices-with-Spring-Boot-and-Spring-Cloud-2E]
+. https://mkyong.com/spring-boot/spring-boot-slf4j-logging-example/[Spring Boot SLF4j Logback example]
+. https://camel.apache.org/components/latest/http-component.html[Apache Camel HTTP Component]
+. https://stackoverflow.com/questions/56320109/spring-controller-is-not-supporting-serverhttprequest[HttpServerRequest Bug]
 
 == Introduction to Microservices
 
@@ -64,8 +67,13 @@ Design Pattern,Spring Boot,Spring Cloud,Kubernetes,Istio
 [source, bash]
 ----
 mvn install:install-file -Dfile=./target/api-1.0-SNAPSHOT.jar \
-  -DgroupId=com.packtpub.microservices.springboot.product.api \
+  -DgroupId=com.packtpub.microservices.springboot.apis \
   -DartifactId=apis -Dversion=1.0-SNAPSHOT -Dpackaging=jar \
+  -DgeneratePom=true
+
+mvn install:install-file -Dfile=./target/utils-1.0-SNAPSHOT.jar \
+  -DgroupId=com.packtpub.microservices.springboot.utils \
+  -DartifactId=utils -Dversion=1.0-SNAPSHOT -Dpackaging=jar \
   -DgeneratePom=true
 ----
 
@@ -153,7 +161,7 @@ public class ProductAppTests {
 ----
 
 . Review Service
-- Port 7002
+- Port 7003
 
 [source, json]
 ----
@@ -167,7 +175,7 @@ public class ProductAppTests {
 ----
 
 . Recommendtation Service
-- Port 7003
+- Port 7002
 
 [source, json]
 ----
