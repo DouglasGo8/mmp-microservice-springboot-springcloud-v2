@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.ProducerTemplate;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,23 +20,28 @@ import java.util.List;
 @AllArgsConstructor
 public class RecommendationServiceImpl implements RecommendationService {
 
-  private final ProducerTemplate producerTemplate;
+    private final ProducerTemplate producerTemplate;
 
-  @Override
-  public List<Recommendation> getRecommendations(int productId) {
+    @Override
+    public List<Recommendation> getRecommendations(int productId) {
 
-    if (productId < 1) {
-      throw new InvalidInputException("Invalid productId: " + productId);
+        if (productId < 1) {
+            throw new InvalidInputException("Invalid productId: " + productId);
+        }
+
+        if (productId == 113) {
+            log.info("No recommendations found for productId: {}", productId);
+            return new ArrayList<>();
+        }
+
+        var dto = this.producerTemplate
+                .requestBody("{{direct.recommendation.mediator.endpoint}}", productId,
+                        RecommendationDto.class);
+
+        var recommendations = dto.getRecommendations();
+
+        log.info("/recommendation response size: {}", recommendations.size());
+
+        return recommendations;
     }
-
-    if (productId == 113) {
-      log.debug("No recommendations found for productId: {}", productId);
-      return List.of(new Recommendation());
-    }
-
-    var dto = this.producerTemplate.requestBody("{{direct.recommendation.mediator.endpoint}}",
-            productId, RecommendationDto.class);
-
-    return dto.getRecommendations();
-  }
 }

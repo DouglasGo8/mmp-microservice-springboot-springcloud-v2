@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.ProducerTemplate;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,7 +30,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     if (productId == 213) {
       log.debug("No reviews found for productId: {}", productId);
-      return List.of(new Review());
+      return new ArrayList<>();
     }
 
     var dto = this.producerTemplate.requestBody("{{direct.review.mediator.endpoint}}", productId,

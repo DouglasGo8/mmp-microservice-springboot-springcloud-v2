@@ -5,6 +5,9 @@ import lombok.Getter;
 
 import java.util.List;
 
+/**
+ * @author dougdb
+ */
 @Getter
 @AllArgsConstructor
 public class ProductAggregate {
