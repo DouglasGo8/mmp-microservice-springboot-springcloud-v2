@@ -199,3 +199,19 @@ public class ProductAppTests {
 }
 ----
 * This service aggregates information from the three core services
+
+[source,bash]
+
+== Limiting available CPUs
+----
+$ echo 'Runtime.getRuntime().availableProcessors()' | docker run --rm -i azul/zulu-openjdk-alpine:17.0.0 jshell -q
+
+$ echo 'Runtime.getRuntime().availableProcessors()' | docker run --rm -i --cpus=3 azul/zulu-openjdk-alpine:17.0.0 jshell -q
+----
+
+== Limiting available memory
+[source,bash]
+----
+$ docker run -it --rm azul/zulu-openjdk-alpine:17.0.0 java --XX:+PrintFlagsFinal | grep "size_t MaxHeapSize"
+$ docker run -it --rm -m=1024M azul/zulu-openjdk-alpine:17.0.0 java -Xmx=600m --XX:+PrintFlagsFinal -version | grep "size_t MaxHeapSize"
+----
