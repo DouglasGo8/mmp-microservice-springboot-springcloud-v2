@@ -16,6 +16,14 @@
 
   <name>Microservice with Spring Boot and Spring Cloud :: APIs Interfaces</name>
 
+  <dependencies>
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-common</artifactId>
+      <version>1.5.12</version>
+    </dependency>
+  </dependencies>
+
   <build>
     <finalName>api-${project.version}</finalName>
   </build>

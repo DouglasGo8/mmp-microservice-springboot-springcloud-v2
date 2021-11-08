@@ -10,12 +10,14 @@ IMPORTANT: Links
 . https://mkyong.com/spring-boot/spring-boot-slf4j-logging-example/[Spring Boot SLF4j Logback example]
 . https://camel.apache.org/components/latest/http-component.html[Apache Camel HTTP Component]
 . https://stackoverflow.com/questions/56320109/spring-controller-is-not-supporting-serverhttprequest[HttpServerRequest Bug]
+. https://reflectoring.io/spring-boot-docker/[Creating Optimized Docker Images for a Spring Boot Application]
+. http://localhost:8080/openapi/v3/api-docs[General Product Composite Service Information]
+. http://localhost:8080/openapi/webjars/swagger-ui/index.html?configUrl=/openapi/v3/api-docs/swagger-config[Product Composite Service OpenAPI Documentation]
 
 == Introduction to Microservices
 
 * Some benefits when decomposing the platform's functionality into a set of autonomous software components
-. A customer can deploy parts of the platform in its own system landscape, and integrating it with its existing system/sub
-using its well-defined APIS
+. A customer can deploy parts of the platform in its own system landscape, and integrating it with its existing system/sub using its well-defined APIS
 
 * Defining a Microservice
 . Fast development, enabling continuous deployments
@@ -64,7 +66,8 @@ Design Pattern,Spring Boot,Spring Cloud,Kubernetes,Istio
 ,===
 
 == Compile Lib Util/Api in local repo using maven
-[source, bash]
+
+[source,bash]
 ----
 mvn install:install-file -Dfile=./target/api-1.0-SNAPSHOT.jar \
   -DgroupId=com.packtpub.microservices.springboot.apis \
@@ -77,7 +80,7 @@ mvn install:install-file -Dfile=./target/utils-1.0-SNAPSHOT.jar \
   -DgeneratePom=true
 ----
 
-[source, java]
+[source,java]
 ----
 @SpringBootApplication
 public class MyApplication {
@@ -97,7 +100,7 @@ public class MyAnotherComponentImpl implements MyAnotherComponent {
 }
 ----
 
-[source, java]
+[source,java]
 ----
 import org.apache.camel.CamelContext;
 import org.apache.camel.ProducerTemplate;
@@ -152,7 +155,7 @@ public class ProductAppTests {
 . Product Service
 - Port 7001
 
-[source, json]
+[source,json]
 ----
 {
   "productId": "x",
@@ -163,7 +166,7 @@ public class ProductAppTests {
 . Review Service
 - Port 7003
 
-[source, json]
+[source,json]
 ----
 {
   "productId": "x",
@@ -177,7 +180,7 @@ public class ProductAppTests {
 . Recommendtation Service
 - Port 7002
 
-[source, json]
+[source,json]
 ----
 {
   "productId": "x",
@@ -190,7 +193,8 @@ public class ProductAppTests {
 
 . Product Composite Service
 - Port 7000
-[source, json]
+
+[source,json]
 ----
 {
   "productInformation": "x",
@@ -198,20 +202,41 @@ public class ProductAppTests {
   "recommendations": []
 }
 ----
+
 * This service aggregates information from the three core services
 
 [source,bash]
-
 == Limiting available CPUs
+
 ----
 $ echo 'Runtime.getRuntime().availableProcessors()' | docker run --rm -i azul/zulu-openjdk-alpine:17.0.0 jshell -q
 
 $ echo 'Runtime.getRuntime().availableProcessors()' | docker run --rm -i --cpus=3 azul/zulu-openjdk-alpine:17.0.0 jshell -q
 ----
 
-== Limiting available memory
+== Limiting available memory & Docker Commands
+
 [source,bash]
 ----
 $ docker run -it --rm azul/zulu-openjdk-alpine:17.0.0 java --XX:+PrintFlagsFinal | grep "size_t MaxHeapSize"
 $ docker run -it --rm -m=1024M azul/zulu-openjdk-alpine:17.0.0 java -Xmx=600m --XX:+PrintFlagsFinal -version | grep "size_t MaxHeapSize"
+$ docker build -t product-service .
+$ docker run --rm -p 8080:8080 -e "SPRING_PROFILES_ACTIVE=docker" product-service
+$ docker logs container_name --tail 0 -f
+$ docker-compose up -d --build
+$ docker-compose logs -f
 ----
+
+== Curl & Postman Endpoints
+
+[source,json]
+----
+{
+  "endpoints": [
+    {"product_composite":  "http://localhost:8080/product-composite/123"}
+  ]
+}
+----
+
+.Sample Swagger-ui with Execution
+image:architecture/thumbs/Swagger-ui.png[Swagger-UI]
