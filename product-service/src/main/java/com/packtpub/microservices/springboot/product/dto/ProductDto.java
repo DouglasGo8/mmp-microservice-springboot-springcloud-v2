@@ -1,4 +1,4 @@
-package com.packtpub.microservices.springboot.product.mediation.dto;
+package com.packtpub.microservices.springboot.product.dto;
 
 import com.packtpub.microservices.springboot.apis.core.product.Product;
 import lombok.AllArgsConstructor;

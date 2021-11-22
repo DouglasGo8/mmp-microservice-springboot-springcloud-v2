@@ -1,6 +1,7 @@
 package com.packtpub.microservices.springboot.product.mediation.routes;
 
 
+import com.packtpub.microservices.springboot.product.beans.ProductBean;
 import lombok.NoArgsConstructor;
 import org.apache.camel.builder.RouteBuilder;
 import org.springframework.stereotype.Component;
@@ -14,8 +15,9 @@ public class ProductMediatorRoute extends RouteBuilder {
 
   @Override
   public void configure() {
+
     from("{{direct.product.mediator.endpoint}}")
-            .to("bean:productBean")
+            .transform(method(ProductBean.class, "getProductById"))
             .end();
   }
 }

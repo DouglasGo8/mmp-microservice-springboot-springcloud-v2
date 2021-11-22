@@ -23,6 +23,11 @@ public class ReviewServiceImpl implements ReviewService {
   private final ProducerTemplate producerTemplate;
 
   @Override
+  public Review createReview(Review body) {
+    return null;
+  }
+
+  @Override
   public List<Review> getReviews(int productId) {
     if (productId < 1) {
       throw new InvalidInputException("Invalid productId: " + productId);
@@ -39,6 +44,11 @@ public class ReviewServiceImpl implements ReviewService {
     log.debug("/reviews response size: {}", dto.getReviews().size());
 
     return dto.getReviews();
+
+  }
+
+  @Override
+  public void deleteReviews(int productId) {
 
   }
 }

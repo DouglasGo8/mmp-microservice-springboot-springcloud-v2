@@ -44,4 +44,14 @@ public class RecommendationServiceImpl implements RecommendationService {
 
         return recommendations;
     }
+
+    @Override
+    public Recommendation createRecommendation(Recommendation body) {
+        return null;
+    }
+
+    @Override
+    public void deleteRecommendations(int productId) {
+
+    }
 }

@@ -4,7 +4,7 @@ import com.packtpub.microservices.springboot.apis.core.product.Product;
 import com.packtpub.microservices.springboot.apis.core.product.ProductService;
 import com.packtpub.microservices.springboot.apis.exceptions.InvalidInputException;
 import com.packtpub.microservices.springboot.apis.exceptions.NotFoundException;
-import com.packtpub.microservices.springboot.product.mediation.dto.ProductDto;
+import com.packtpub.microservices.springboot.product.dto.ProductDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.ProducerTemplate;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 public class ProductServiceImpl implements ProductService {
+
 
   private final ProducerTemplate producerTemplate;
 
@@ -32,6 +33,16 @@ public class ProductServiceImpl implements ProductService {
             productId, ProductDto.class);
 
     return dto.getProduct();
+  }
+
+  @Override
+  public Product createProduct(Product body) {
+    return null;
+  }
+
+  @Override
+  public void deleteProduct(int productId) {
+
   }
 
 }

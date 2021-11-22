@@ -12,11 +12,13 @@
   <name>Microservice with Spring Boot and Spring Cloud</name>
 
   <properties>
+    <camel.version>3.11.2</camel.version>
+    <org.projectlombok>1.18.22</org.projectlombok>
+    <spring.boot-version>2.5.5</spring.boot-version>
+    <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
+    <surefire.plugin.version>3.0.0-M4</surefire.plugin.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.boot-version>2.5.5</spring.boot-version>
-    <camel.version>3.11.2</camel.version>
-    <surefire.plugin.version>3.0.0-M4</surefire.plugin.version>
   </properties>
 
   <dependencyManagement>
@@ -34,6 +36,14 @@
         <groupId>org.apache.camel.springboot</groupId>
         <artifactId>camel-spring-boot-dependencies</artifactId>
         <version>${camel.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <!-- Test Containers -->
+      <dependency>
+        <groupId>org.testcontainers</groupId>
+        <artifactId>testcontainers-bom</artifactId>
+        <version>1.16.0</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -92,6 +102,11 @@
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.mapstruct</groupId>
+      <artifactId>mapstruct</artifactId>
+      <version>${org.mapstruct.version}</version>
+    </dependency>
     <!-- Test -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -103,6 +118,17 @@
       <artifactId>camel-test-spring-junit5</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>testcontainers</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
   <build>
     <plugins>
@@ -113,6 +139,23 @@
         <configuration>
           <source>11</source>
           <target>11</target>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>${org.projectlombok}</version>
+            </path>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok-mapstruct-binding</artifactId>
+              <version>0.2.0</version>
+            </path>
+            <path>
+              <groupId>org.mapstruct</groupId>
+              <artifactId>mapstruct-processor</artifactId>
+              <version>${org.mapstruct.version}</version>
+            </path>
+          </annotationProcessorPaths>
         </configuration>
       </plugin>
       <plugin>

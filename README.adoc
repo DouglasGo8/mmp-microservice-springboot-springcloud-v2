@@ -13,6 +13,9 @@ IMPORTANT: Links
 . https://reflectoring.io/spring-boot-docker/[Creating Optimized Docker Images for a Spring Boot Application]
 . http://localhost:8080/openapi/v3/api-docs[General Product Composite Service Information]
 . http://localhost:8080/openapi/webjars/swagger-ui/index.html?configUrl=/openapi/v3/api-docs/swagger-config[Product Composite Service OpenAPI Documentation]
+. https://mapstruct.org/[Map Struct]
+. https://stackoverflow.com/questions/47676369/mapstruct-and-lombok-not-working-together[MapStruct and Lombok not working together]
+
 
 == Introduction to Microservices
 
@@ -64,6 +67,20 @@ Design Pattern,Spring Boot,Spring Cloud,Kubernetes,Istio
 *Control loop*,,Kubernetes controller managers,
 *Centralized monitoring and alarms*,,,,Kiali or Grafana and Prometheus
 ,===
+
+
+== Using Junit Jupter to Tests
+[source, java]
+----
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+----
+
+== Maven Test specific class
+[source,bash]
+----
+mvn clean test -Dtest=MyClassTest
+----
 
 == Compile Lib Util/Api in local repo using maven
 
