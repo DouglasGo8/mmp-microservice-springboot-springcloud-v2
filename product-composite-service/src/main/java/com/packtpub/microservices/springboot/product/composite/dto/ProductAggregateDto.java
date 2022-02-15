@@ -1,6 +1,5 @@
-package com.packtpub.microservices.springboot.product.composite.mediation.dto;
+package com.packtpub.microservices.springboot.product.composite.dto;
 
-import com.packtpub.microservices.springboot.apis.composite.ProductAggregate;
 import com.packtpub.microservices.springboot.apis.core.product.Product;
 import com.packtpub.microservices.springboot.apis.core.recommendation.Recommendation;
 import com.packtpub.microservices.springboot.apis.core.review.Review;

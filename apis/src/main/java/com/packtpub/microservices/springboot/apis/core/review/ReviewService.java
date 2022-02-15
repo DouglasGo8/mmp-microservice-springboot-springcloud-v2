@@ -19,19 +19,15 @@ public interface ReviewService {
    * @param body A JSON representation of the new review
    * @return A JSON representation of the newly created review
    */
-  @PostMapping(
-          value = "/review",
-          consumes = "application/json",
-          produces = "application/json")
+  @PostMapping(value = "/review", consumes = "application/json", produces = "application/json")
   Review createReview(@RequestBody Review body);
 
-  @GetMapping(value = "/review", produces = "application/json")
 
   /**
-   * Sample usage: "curl $HOST:$PORT/review?productId=1".
    * @param productId Id of the product
    * @return the reviews of the product
    */
+  @GetMapping(value = "/review", produces = "application/json")
   List<Review> getReviews(@RequestParam(value = "productId", required = true) int productId);
 
 

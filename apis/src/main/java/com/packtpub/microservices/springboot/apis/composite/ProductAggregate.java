@@ -19,4 +19,13 @@ public class ProductAggregate {
   private final List<RecommendationSummary> recommendations;
   private final List<ReviewSummary> reviews;
   private final ServiceAddresses serviceAddresses;
+
+  public ProductAggregate() {
+    productId = 0;
+    productName = null;
+    productWeight = 0;
+    recommendations = null;
+    reviews = null;
+    serviceAddresses = null;
+  }
 }

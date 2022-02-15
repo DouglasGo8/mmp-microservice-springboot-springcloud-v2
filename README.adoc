@@ -50,13 +50,12 @@ IMPORTANT: Links
 . Central Configuration
 . Centralized log analysis
 . Distributed tracing
-. Circuit breaker
+. Circuit Breaker
 . Control loop
 . Centralized monitoring and alarms
 
 .Software Enablers
-,===
-Design Pattern,Spring Boot,Spring Cloud,Kubernetes,Istio
+,=== Design Pattern,Spring Boot,Spring Cloud,Kubernetes,Istio
 *Service Discovery*,,Netflix Eureka and Spring Cloud LoadBalancer,Kubernetes kube-proxy and service resources,
 *Edge Server*,,Spring Cloud and Spring Security OAuth, Kubernetes Ingress Controller,
 *Reactive microservice*,Project Reactor and Spring Webflux using Apache Camel to manage and mediate all integrations,,,
@@ -65,18 +64,18 @@ Design Pattern,Spring Boot,Spring Cloud,Kubernetes,Istio
 *Distributed tracing*,,Spring Cloud Sleuth and Zipkin,,Jaeger
 *Circuit breaker*,,Resilience4j,,Outlier detection,
 *Control loop*,,Kubernetes controller managers,
-*Centralized monitoring and alarms*,,,,Kiali or Grafana and Prometheus
-,===
-
+*Centralized monitoring and alarms*,,,,Kiali or Grafana and Prometheus ,===
 
 == Using Junit Jupter to Tests
-[source, java]
+
+[source,java]
 ----
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 ----
 
 == Maven Test specific class
+
 [source,bash]
 ----
 mvn clean test -Dtest=MyClassTest
@@ -217,6 +216,34 @@ public class ProductAppTests {
   "productInformation": "x",
   "reviews": [],
   "recommendations": []
+}
+----
+
+. Product Composite Service create Aggregate
+- Port 7000
+
+[source,json]
+----
+{
+    "productId": "123",
+    "productWeight": "34",
+    "productName": "Anchor",
+    "recommendations": [
+        {
+            "rate": "2",
+            "recommendationId": 2,
+            "author": "Joseph Stratus",
+            "content": "No Content"
+        }
+    ],
+    "reviews": [
+        {
+            "reviewId": 123,
+            "author": "Craus T2",
+            "subject": "No Time",
+            "content": "No Content"
+        }
+    ]
 }
 ----
 

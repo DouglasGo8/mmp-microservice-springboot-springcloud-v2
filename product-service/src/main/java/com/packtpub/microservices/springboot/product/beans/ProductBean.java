@@ -1,5 +1,8 @@
 package com.packtpub.microservices.springboot.product.beans;
 
+import com.mongodb.DuplicateKeyException;
+import com.packtpub.microservices.springboot.apis.core.product.Product;
+import com.packtpub.microservices.springboot.apis.exceptions.InvalidInputException;
 import com.packtpub.microservices.springboot.apis.exceptions.NotFoundException;
 import com.packtpub.microservices.springboot.product.dto.ProductDto;
 import com.packtpub.microservices.springboot.product.persistence.ProductRepository;
@@ -22,6 +25,10 @@ public class ProductBean {
   private final ServiceUtil serviceUtil;
   private final ProductRepository repository;
 
+  /**
+   * @param productId id of Product
+   * @return mapped ProductDto
+   */
   public ProductDto getProductById(@Body int productId) {
 
     // var product = new Product(productId, 123, "name-" + productId, serviceUtil.getServiceAddress());
@@ -38,7 +45,29 @@ public class ProductBean {
     return new ProductDto(response);
   }
 
-  public void createProduct() {
-    log.info("under construction....");
+  /**
+   * @param product to be Saved
+   * @return mapped ProductDto
+   */
+  public ProductDto createProduct(@Body Product product) {
+
+    log.info("createProduct fired={}", product);
+
+    try {
+      var entity = mapper.apiToEntity(product);
+      var newEntity = this.repository.save(entity);
+
+      return new ProductDto(mapper.entityToApi(newEntity));
+    } catch (DuplicateKeyException dke) {
+      throw new InvalidInputException("Duplicate key, Product Id" + product.getProductId());
+    }
+  }
+
+  /**
+   *
+   * @param productId to be deleted
+   */
+  public void deleteProduct(@Body int productId) {
+    this.repository.findByProductId(productId).ifPresent(repository::delete);
   }
 }

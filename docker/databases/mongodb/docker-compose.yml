@@ -3,7 +3,6 @@ version: '3.7'
 services:
   mongodb:
     image: mongo:latest
-    mem_limit: 512m
     container_name: mongodb
 
     environment:

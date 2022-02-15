@@ -95,7 +95,7 @@ public class PersistenceTests {
 
   @Test
   void getByProductId() {
-    Optional<ProductEntity> entity = this.repo.findByProductId(savedEntity.getProductId());
+    var entity = this.repo.findByProductId(savedEntity.getProductId());
 
     assertTrue(entity.isPresent());
     assertEqualsProduct(savedEntity, entity.get());
@@ -106,7 +106,7 @@ public class PersistenceTests {
   @Disabled
   void duplicateError() {
     assertThrows(DuplicateKeyException.class, () -> {
-      ProductEntity entity = new ProductEntity(savedEntity.getProductId(), "n", 1);
+      var entity = new ProductEntity(savedEntity.getProductId(), "n", 1);
       this.repo.save(entity);
     });
   }
@@ -115,8 +115,8 @@ public class PersistenceTests {
   void optimisticLockError() {
 
     // Store the saved entity in two separate entity objects
-    ProductEntity entity1 = this.repo.findById(savedEntity.getId()).get();
-    ProductEntity entity2 = this.repo.findById(savedEntity.getId()).get();
+    var entity1 = this.repo.findById(savedEntity.getId()).get();
+    var entity2 = this.repo.findById(savedEntity.getId()).get();
 
     // Update the entity using the first entity object
     entity1.setProductName("n1");
@@ -130,7 +130,7 @@ public class PersistenceTests {
     });
 
     // Get the updated entity from the database and verify its new sate
-    ProductEntity updatedEntity = this.repo.findById(savedEntity.getId()).get();
+    var updatedEntity = this.repo.findById(savedEntity.getId()).get();
     assertEquals(1, (int) updatedEntity.getVersion());
     assertEquals("n1", updatedEntity.getProductName());
   }
@@ -154,8 +154,10 @@ public class PersistenceTests {
 
 
   private Pageable testNextPage(Pageable nextPage, String expectedProductIds, boolean expectsNextPage) {
-    Page<ProductEntity> productPage = this.repo.findAll(nextPage);
-    assertEquals(expectedProductIds, productPage.getContent().stream().map(p -> p.getProductId()).collect(Collectors.toList()).toString());
+    var productPage = this.repo.findAll(nextPage);
+    assertEquals(expectedProductIds, productPage.getContent().stream().map(ProductEntity::getProductId)
+            .collect(Collectors.toList()).toString());
+    //
     assertEquals(expectsNextPage, productPage.hasNext());
     return productPage.nextPageable();
   }

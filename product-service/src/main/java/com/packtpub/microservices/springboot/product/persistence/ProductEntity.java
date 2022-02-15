@@ -27,6 +27,7 @@ public class ProductEntity {
 
   @Indexed(unique = true)
   private int productId;
+
   private int productWeight;
 
   private String productName;
