@@ -1,5 +1,6 @@
 package com.packtpub.microservices.springboot.product.composite.beans.product;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.packtpub.microservices.springboot.apis.composite.ProductAggregate;
 import com.packtpub.microservices.springboot.apis.core.product.Product;
 import com.packtpub.microservices.springboot.product.composite.beans.common.CommonOpsBean;
@@ -23,6 +24,7 @@ public class ProductBean extends CommonOpsBean {
   private final String productServicePort;
   private final String productServiceHost;
   private final RestTemplate restTemplate;
+
 
 
   @Autowired

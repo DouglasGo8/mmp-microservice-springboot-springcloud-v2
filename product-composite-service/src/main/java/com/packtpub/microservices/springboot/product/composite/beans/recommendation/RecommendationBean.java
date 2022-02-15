@@ -1,6 +1,7 @@
 package com.packtpub.microservices.springboot.product.composite.beans.recommendation;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.packtpub.microservices.springboot.apis.composite.ProductAggregate;
 import com.packtpub.microservices.springboot.apis.core.recommendation.Recommendation;
 import com.packtpub.microservices.springboot.product.composite.beans.common.CommonOpsBean;

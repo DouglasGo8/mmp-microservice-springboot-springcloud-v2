@@ -4,22 +4,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.packtpub.microservices.springboot.apis.exceptions.InvalidInputException;
 import com.packtpub.microservices.springboot.apis.exceptions.NotFoundException;
 import com.packtpub.microservices.springboot.utils.http.HttpErrorInfo;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.HttpClientErrorException;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 
 @Slf4j
-@NoArgsConstructor
 public abstract class CommonOpsBean {
 
   private ObjectMapper mapper;
 
-  @Autowired
-  public CommonOpsBean(ObjectMapper mapper) {
-    this.mapper = mapper;
+  @PostConstruct
+  public void setUp() {
+    this.mapper = new ObjectMapper();
   }
 
   protected RuntimeException handleHttpClientException(HttpClientErrorException ex) {
