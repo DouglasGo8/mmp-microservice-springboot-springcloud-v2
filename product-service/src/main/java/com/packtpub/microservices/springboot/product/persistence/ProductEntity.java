@@ -32,7 +32,6 @@ public class ProductEntity {
 
   private String productName;
 
-
   public ProductEntity(int productId, String productName, int productWeight) {
     this.productId = productId;
     this.productName = productName;

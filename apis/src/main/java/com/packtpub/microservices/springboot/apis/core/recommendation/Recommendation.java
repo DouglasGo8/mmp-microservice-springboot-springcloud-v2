@@ -2,21 +2,23 @@ package com.packtpub.microservices.springboot.apis.core.recommendation;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author dougdb
  */
 @Getter
+@Setter
 @AllArgsConstructor
 public class Recommendation {
 
-  private final int rate;
-  private final int productId;
-  private final int recommendationId;
+  private int rate;
+  private int productId;
+  private int recommendationId;
 
-  private final String author;
-  private final String content;
-  private final String serviceAddress;
+  private String author;
+  private String content;
+  private String serviceAddress;
 
   public Recommendation() {
     productId = 0;

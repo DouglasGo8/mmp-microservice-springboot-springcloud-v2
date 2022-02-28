@@ -3,7 +3,7 @@ package com.packtpub.microservices.springboot.recommendation.services;
 import com.packtpub.microservices.springboot.apis.core.recommendation.Recommendation;
 import com.packtpub.microservices.springboot.apis.core.recommendation.RecommendationService;
 import com.packtpub.microservices.springboot.apis.exceptions.InvalidInputException;
-import com.packtpub.microservices.springboot.recommendation.mediation.dto.RecommendationDto;
+import com.packtpub.microservices.springboot.recommendation.dto.RecommendationDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.ProducerTemplate;
@@ -35,7 +35,7 @@ public class RecommendationServiceImpl implements RecommendationService {
         }
 
         var dto = this.producerTemplate
-                .requestBody("{{direct.recommendation.mediator.endpoint}}", productId,
+                .requestBody("{{direct.recommendation.mediator.getRecommendations.endpoint}}", productId,
                         RecommendationDto.class);
 
         var recommendations = dto.getRecommendations();
@@ -47,7 +47,9 @@ public class RecommendationServiceImpl implements RecommendationService {
 
     @Override
     public Recommendation createRecommendation(Recommendation body) {
-        return null;
+        var dto = this.producerTemplate.requestBody("{{direct.recommendation.mediator.createRecommendation.endpoint}}",
+                body, RecommendationDto.class);
+        return dto.getRecommendations().get(0);
     }
 
     @Override

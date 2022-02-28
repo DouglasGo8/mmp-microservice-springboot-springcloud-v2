@@ -75,9 +75,9 @@ public class ProductCompositeMediatorRoute extends RouteBuilder {
             //.log("${body} - ${threadName}");
             .multicast().streaming().parallelProcessing().executorService(Executors.newFixedThreadPool(3))
             .to(ExchangePattern.InOnly,
-                    "bean:productBean?method=createProduct",
+                    "bean:productBean?method=createProduct"/*,
                     "bean:recommendationBean?method=createRecommendation",
-                    "bean:reviewBean?method=createReview")
+                    "bean:reviewBean?method=createReview"*/)
             .end();
   }
 }

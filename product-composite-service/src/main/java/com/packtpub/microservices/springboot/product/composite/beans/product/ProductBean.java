@@ -1,6 +1,5 @@
 package com.packtpub.microservices.springboot.product.composite.beans.product;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.packtpub.microservices.springboot.apis.composite.ProductAggregate;
 import com.packtpub.microservices.springboot.apis.core.product.Product;
 import com.packtpub.microservices.springboot.product.composite.beans.common.CommonOpsBean;
@@ -24,7 +23,6 @@ public class ProductBean extends CommonOpsBean {
   private final String productServicePort;
   private final String productServiceHost;
   private final RestTemplate restTemplate;
-
 
 
   @Autowired
@@ -53,9 +51,10 @@ public class ProductBean extends CommonOpsBean {
   public void createProduct(final @Body ProductAggregate body) {
     try {
       final var productService = this.productServiceUrl("/product");
+      final var productToInsert = new Product(body.getProductId(), body.getProductWeight(), body.getProductName(), null);
       log.info("Will post a new product to URL: {}", productService);
-      // var product = this.restTemplate.postForObject(productService, body, Product.class);
-      // log.debug("Created a product with id: {}", product.getProductId());
+      var product = this.restTemplate.postForObject(productService, productToInsert, Product.class);
+      log.debug("Created a product with id: {}", product.getProductId());
     } catch (HttpClientErrorException ex) {
       throw super.handleHttpClientException(ex);
     }

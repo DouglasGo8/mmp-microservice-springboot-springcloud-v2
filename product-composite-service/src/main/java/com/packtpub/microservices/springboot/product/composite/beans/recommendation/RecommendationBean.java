@@ -1,7 +1,6 @@
 package com.packtpub.microservices.springboot.product.composite.beans.recommendation;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.packtpub.microservices.springboot.apis.composite.ProductAggregate;
 import com.packtpub.microservices.springboot.apis.core.recommendation.Recommendation;
 import com.packtpub.microservices.springboot.product.composite.beans.common.CommonOpsBean;
@@ -64,9 +63,10 @@ public class RecommendationBean extends CommonOpsBean {
   public void createRecommendation(final @Body ProductAggregate body) {
     try {
       //
-      var recommendationService = this.recommendationServiceUrl("/recommendation");
-      log.info("Will post a new recommendation to URL: {}", recommendationService);
       if (null != body.getRecommendations()) {
+        var recommendationService = this.recommendationServiceUrl("/recommendation");
+        log.info("Will post a new recommendation to URL: {}", recommendationService);
+        //
         body.getRecommendations().forEach(r -> {
           var recommendation = new Recommendation(r.getRate(), body.getProductId(), r.getRecommendationId(),
                   r.getAuthor(), r.getContent(), null);

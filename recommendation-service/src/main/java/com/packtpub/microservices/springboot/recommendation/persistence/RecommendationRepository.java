@@ -1,4 +1,4 @@
-package com.packtpub.microservices.springboot.recommendation.repository;
+package com.packtpub.microservices.springboot.recommendation.persistence;
 
 import org.springframework.data.repository.CrudRepository;
 

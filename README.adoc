@@ -175,7 +175,8 @@ public class ProductAppTests {
 ----
 {
   "productId": "x",
-  "name": "xxx"
+  "productName": "xxx",
+  "productWeight": "xxx"
 }
 ----
 
@@ -193,7 +194,7 @@ public class ProductAppTests {
 }
 ----
 
-. Recommendtation Service
+. Recommendation Service
 - Port 7002
 
 [source,json]

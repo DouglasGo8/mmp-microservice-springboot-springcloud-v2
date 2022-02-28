@@ -1,4 +1,4 @@
-package com.packtpub.microservices.springboot.recommendation.mediation.dto;
+package com.packtpub.microservices.springboot.recommendation.dto;
 
 import com.packtpub.microservices.springboot.apis.core.recommendation.Recommendation;
 import lombok.AllArgsConstructor;
@@ -14,6 +14,5 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class RecommendationDto {
-
   private final List<Recommendation> recommendations;
 }
