@@ -47,14 +47,24 @@ public class ProductBean extends CommonOpsBean {
     return new ProductAggregateDto(product);
   }
 
-
   public void createProduct(final @Body ProductAggregate body) {
     try {
       final var productService = this.productServiceUrl("/product");
       final var productToInsert = new Product(body.getProductId(), body.getProductWeight(), body.getProductName(), null);
       log.info("Will post a new product to URL: {}", productService);
       var product = this.restTemplate.postForObject(productService, productToInsert, Product.class);
+      assert product != null;
       log.debug("Created a product with id: {}", product.getProductId());
+    } catch (HttpClientErrorException ex) {
+      throw super.handleHttpClientException(ex);
+    }
+  }
+
+  public void deleteProduct(final @Body int productId) {
+    try {
+      final var productService = this.productServiceUrl("/product/" + productId);
+      log.info("Will post a new product to URL: {}", productService);
+      this.restTemplate.delete(productService);
     } catch (HttpClientErrorException ex) {
       throw super.handleHttpClientException(ex);
     }

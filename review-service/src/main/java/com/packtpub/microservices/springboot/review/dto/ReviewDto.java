@@ -1,4 +1,4 @@
-package com.packtpub.microservices.springboot.review.mediation.dto;
+package com.packtpub.microservices.springboot.review.dto;
 
 import com.packtpub.microservices.springboot.apis.core.review.Review;
 import lombok.AllArgsConstructor;

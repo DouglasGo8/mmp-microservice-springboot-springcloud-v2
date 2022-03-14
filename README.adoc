@@ -85,6 +85,7 @@ mvn clean test -Dtest=MyClassTest
 
 [source,bash]
 ----
+mvn clean -DskipTests compile package
 mvn install:install-file -Dfile=./target/api-1.0-SNAPSHOT.jar \
   -DgroupId=com.packtpub.microservices.springboot.apis \
   -DartifactId=apis -Dversion=1.0-SNAPSHOT -Dpackaging=jar \

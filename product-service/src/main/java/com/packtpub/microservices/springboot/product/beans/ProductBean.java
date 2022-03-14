@@ -68,6 +68,7 @@ public class ProductBean {
    * @param productId to be deleted
    */
   public void deleteProduct(@Body int productId) {
+    log.info("deleteProduct: tries to delete an entity with productId: {}", productId);
     this.repository.findByProductId(productId).ifPresent(repository::delete);
   }
 }

@@ -20,40 +20,45 @@ import java.util.List;
 @AllArgsConstructor
 public class RecommendationServiceImpl implements RecommendationService {
 
-    private final ProducerTemplate producerTemplate;
+  private final ProducerTemplate producerTemplate;
 
-    @Override
-    public List<Recommendation> getRecommendations(int productId) {
+  @Override
+  public List<Recommendation> getRecommendations(int productId) {
 
-        if (productId < 1) {
-            throw new InvalidInputException("Invalid productId: " + productId);
-        }
-
-        if (productId == 113) {
-            log.info("No recommendations found for productId: {}", productId);
-            return new ArrayList<>();
-        }
-
-        var dto = this.producerTemplate
-                .requestBody("{{direct.recommendation.mediator.getRecommendations.endpoint}}", productId,
-                        RecommendationDto.class);
-
-        var recommendations = dto.getRecommendations();
-
-        log.info("/recommendation response size: {}", recommendations.size());
-
-        return recommendations;
+    if (productId < 1) {
+      throw new InvalidInputException("Invalid productId: " + productId);
     }
 
-    @Override
-    public Recommendation createRecommendation(Recommendation body) {
-        var dto = this.producerTemplate.requestBody("{{direct.recommendation.mediator.createRecommendation.endpoint}}",
-                body, RecommendationDto.class);
-        return dto.getRecommendations().get(0);
+    if (productId == 113) {
+      log.info("No recommendations found for productId: {}", productId);
+      return new ArrayList<>();
     }
 
-    @Override
-    public void deleteRecommendations(int productId) {
+    var dto = this.producerTemplate
+            .requestBody("{{direct.recommendation.mediator.getRecommendations.endpoint}}", productId,
+                    RecommendationDto.class);
 
-    }
+    var recommendations = dto.getRecommendations();
+
+    log.info("/recommendation response size: {}", recommendations.size());
+
+    return recommendations;
+  }
+
+  @Override
+  public Recommendation createRecommendation(Recommendation body) {
+    //
+    var dto = this.producerTemplate
+            .requestBody("{{direct.recommendation.mediator.createRecommendation.endpoint}}", body,
+                    RecommendationDto.class);
+    //
+    return dto.getRecommendations().get(0);
+  }
+
+  @Override
+  public void deleteRecommendations(int productId) {
+    this.producerTemplate
+            .asyncRequestBody("{{direct.recommendation.mediator.deleteRecommendation.endpoint}}",
+                    productId);
+  }
 }

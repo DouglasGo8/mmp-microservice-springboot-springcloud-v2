@@ -7,6 +7,9 @@ services:
     mem_limit: 512m
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      mongodb:
+        condition: service_healthy
 
   recommendation:
     build: ../../recommendation-service
@@ -19,6 +22,9 @@ services:
     build: ../../review-service
     container_name: review-service
     mem_limit: 512m
+    depends_on:
+      postgres:
+        condition: service_healthy
     environment:
       - SPRING_PROFILES_ACTIVE=docker
 
@@ -26,7 +32,51 @@ services:
     build: ../../product-composite-service
     container_name: product-composite-service
     mem_limit: 512m
+    depends_on:
+      mongodb:
+        condition: service_healthy
     ports:
       - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    mem_limit: 512m
+    command: mongod
+    healthcheck:
+      test: "mongo --eval 'db.stats().ok'"
+      interval: 5s
+      timeout: 2s
+      retries: 60
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: welcome1
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data_container:/data/db
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "${DB_NAME}", "-U", "${DB_USER}" ]
+      timeout: 45s
+      interval: 10s
+      retries: 10
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: guest
+      POSTGRES_PASSWORD: welcome1
+      PG_DATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres:
+  mongodb_data_container:

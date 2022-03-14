@@ -3,6 +3,7 @@ package com.packtpub.microservices.springboot.review.repository;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -10,6 +11,7 @@ import javax.persistence.*;
  * @author dougdb
  */
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @Table(name = "reviews", indexes = {@Index(name = "reviews_unique_idx", unique = true, columnList = "productId,reviewId")})

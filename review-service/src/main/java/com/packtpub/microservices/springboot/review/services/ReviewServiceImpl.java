@@ -3,7 +3,7 @@ package com.packtpub.microservices.springboot.review.services;
 import com.packtpub.microservices.springboot.apis.core.review.Review;
 import com.packtpub.microservices.springboot.apis.core.review.ReviewService;
 import com.packtpub.microservices.springboot.apis.exceptions.InvalidInputException;
-import com.packtpub.microservices.springboot.review.mediation.dto.ReviewDto;
+import com.packtpub.microservices.springboot.review.dto.ReviewDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.ProducerTemplate;
@@ -24,7 +24,8 @@ public class ReviewServiceImpl implements ReviewService {
 
   @Override
   public Review createReview(Review body) {
-    return null;
+    return this.producerTemplate
+            .requestBody("{{direct.createReview.mediator.endpoint}}", body, Review.class);
   }
 
   @Override
@@ -38,7 +39,7 @@ public class ReviewServiceImpl implements ReviewService {
       return new ArrayList<>();
     }
 
-    var dto = this.producerTemplate.requestBody("{{direct.review.mediator.endpoint}}", productId,
+    var dto = this.producerTemplate.requestBody("{{direct.getReview.mediator.endpoint}}", productId,
             ReviewDto.class);
 
     log.debug("/reviews response size: {}", dto.getReviews().size());
@@ -49,6 +50,6 @@ public class ReviewServiceImpl implements ReviewService {
 
   @Override
   public void deleteReviews(int productId) {
-
+    this.producerTemplate.asyncRequestBody("{{direct.deleteReview.mediator.endpoint}}", productId);
   }
 }

@@ -38,7 +38,9 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
 
   @Override
   public void deleteProduct(int productId) {
-
+    log.debug("deleteCompositeProduct: Deletes a product aggregate for productId: {}", productId);
+    this.producerTemplate.asyncSendBody("{{seda.product.delete.composite.mediator.endpoint}}", productId);
+    log.debug("deleteCompositeProduct: aggregate entities deleted for productId: {}", productId);
   }
 
 

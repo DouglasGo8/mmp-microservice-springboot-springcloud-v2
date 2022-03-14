@@ -28,7 +28,6 @@ public class RecommendationBean extends CommonOpsBean {
   private final String recommendationServiceHost;
   private final RestTemplate restTemplate;
 
-
   @Autowired
   public RecommendationBean(
           final RestTemplate restTemplate,
@@ -70,13 +69,25 @@ public class RecommendationBean extends CommonOpsBean {
         body.getRecommendations().forEach(r -> {
           var recommendation = new Recommendation(r.getRate(), body.getProductId(), r.getRecommendationId(),
                   r.getAuthor(), r.getContent(), null);
-        /*var recommendationCreated = this.restTemplate.postForObject(recommendationService, recommendation,
-                Recommendation.class);
-        log.debug("Created a recommendation with id: {}", recommendationCreated.getProductId());*/
+          var recommendationCreated = this.restTemplate.postForObject(recommendationService, recommendation,
+                  Recommendation.class);
+          assert recommendationCreated != null;
+          log.debug("Created a recommendation with id: {}", recommendationCreated.getProductId());
         });
       }
     } catch (HttpClientErrorException ex) {
       throw super.handleHttpClientException(ex);
+    }
+  }
+
+  public void deleteRecommendation(final @Body int productId) {
+    try {
+      var url = this.recommendationServiceUrl("/recommendation?productId=" + productId);
+      log.debug("Will call the deleteRecommendations API on URL: {}", url);
+      restTemplate.delete(url);
+
+    } catch (HttpClientErrorException ex) {
+      throw handleHttpClientException(ex);
     }
   }
 

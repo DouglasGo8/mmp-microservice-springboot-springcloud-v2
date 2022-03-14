@@ -54,6 +54,10 @@ public class RecommendationBean {
 
   }
 
+  public void deleteRecommendation(@Body int productId) {
+    log.info("deleteRecommendations: tries to delete recommendations for the product with productId: {}", productId);
+    this.repository.deleteAll(repository.findByProductId(productId));
+  }
 
   public RecommendationDto createRecommendation(final @Body Recommendation body) {
 
@@ -68,7 +72,6 @@ public class RecommendationBean {
     } catch (DuplicateKeyException dke) {
       throw new InvalidInputException("Duplicate key, Product Id: " + body.getProductId() + ", Recommendation Id:" + body.getRecommendationId());
     }
-
 
   }
 }

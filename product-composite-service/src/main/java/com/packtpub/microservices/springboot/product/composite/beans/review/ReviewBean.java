@@ -62,13 +62,19 @@ public class ReviewBean extends CommonOpsBean {
     try {
       final var reviewService = this.reviewServiceUrl("/review");
       log.info("Will post a new review to URL: {}", reviewService);
-      //Review review = restTemplate.postForObject(url, body, Review.class);
-      //log.info("Created a review with id: {}", review.getProductId());
+      var review = restTemplate.postForObject(reviewService, body, Review.class);
+      assert review != null;
+      log.info("Created a review with id: {}", review.getProductId());
     } catch (HttpClientErrorException ex) {
       throw super.handleHttpClientException(ex);
     }
   }
 
+  public void deleteReview(final @Body int productId) {
+    final var reviewService = this.reviewServiceUrl("/review?productId=" + productId);
+    log.debug("Will call the deleteReviews API on URL: {}", reviewService);
+    restTemplate.delete(reviewService);
+  }
 
   private String reviewServiceUrl(String dynamicUri) {
     return "http://" + this.reviewServiceHost + ":" +

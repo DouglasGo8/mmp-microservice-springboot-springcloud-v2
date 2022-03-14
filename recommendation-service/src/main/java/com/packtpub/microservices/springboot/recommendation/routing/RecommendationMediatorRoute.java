@@ -24,6 +24,10 @@ public class RecommendationMediatorRoute extends RouteBuilder {
             .transform(method(RecommendationBean.class, "createRecommendation"))
             .end();
 
+    from("{{direct.recommendation.mediator.deleteRecommendation.endpoint}}")
+            .transform(method(RecommendationBean.class, "deleteRecommendation"))
+            .end();
+
   }
 
 

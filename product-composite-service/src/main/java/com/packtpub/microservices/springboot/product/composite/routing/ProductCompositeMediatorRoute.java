@@ -57,12 +57,12 @@ public class ProductCompositeMediatorRoute extends RouteBuilder {
               .to("bean:productBean?method=getProduct")
               .setProperty("product", body())
             .end() //end circuit breaker PRODUCT_SERVICE
-            .circuitBreaker()
+            .circuitBreaker().inheritErrorHandler(true)
               .resilience4jConfiguration().timeoutEnabled(true).timeoutDuration(1000).end()
               .to("bean:recommendationBean?method=getRecommendations")
               .setProperty("recommendations", body())
             .end() //end circuit breaker RECOMMENDATION_SERVICE
-            .circuitBreaker()
+            .circuitBreaker().inheritErrorHandler(true)
               .resilience4jConfiguration().timeoutEnabled(true).timeoutDuration(1000).end()
               .to("bean:reviewBean?method=getReviews")
               .setProperty("reviews", body())
@@ -72,12 +72,24 @@ public class ProductCompositeMediatorRoute extends RouteBuilder {
 
 
     from("{{seda.product.create.composite.mediator.endpoint}}")
-            //.log("${body} - ${threadName}");
-            .multicast().streaming().parallelProcessing().executorService(Executors.newFixedThreadPool(3))
+            .log("Creating Product ${body} - ${threadName}")
+            .multicast().streaming()
+            .parallelProcessing().executorService(Executors.newFixedThreadPool(3))
             .to(ExchangePattern.InOnly,
-                    "bean:productBean?method=createProduct"/*,
+                    "bean:productBean?method=createProduct",
                     "bean:recommendationBean?method=createRecommendation",
-                    "bean:reviewBean?method=createReview"*/)
+                    "bean:reviewBean?method=createReview")
+            .end();
+
+
+    from("{{seda.product.delete.composite.mediator.endpoint}}")
+            .log("Deleting Product${body} - ${threadName}")
+            .multicast().streaming()
+            .parallelProcessing().executorService(Executors.newFixedThreadPool(3))
+            .to(ExchangePattern.InOnly,
+                    "bean:productBean?method=deleteProduct",
+                    "bean:recommendationBean?method=deleteRecommendation",
+                    "bean:reviewBean?method=deleteReview")
             .end();
   }
 }
