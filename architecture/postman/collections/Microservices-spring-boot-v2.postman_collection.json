@@ -1,236 +1,315 @@
 {
 	"info": {
-		"_postman_id": "a4190aec-1713-4217-9207-5db3f919a715",
+		"_postman_id": "083682a8-db3c-4e7e-9ea1-58045eedf2f8",
 		"name": "Microservices-spring-boot-v2",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "195866"
 	},
 	"item": [
 		{
-			"name": "Get Recommendation",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:7002/recommendation?productId=123",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "7002",
-					"path": [
-						"recommendation"
-					],
-					"query": [
-						{
-							"key": "productId",
-							"value": "123"
+			"name": "localDev-apis",
+			"item": [
+				{
+					"name": "Get Recommendation",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7002/recommendation?productId=123",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7002",
+							"path": [
+								"recommendation"
+							],
+							"query": [
+								{
+									"key": "productId",
+									"value": "123"
+								}
+							]
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create Product Composite",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"productId\": \"123\",\n    \"productWeight\": \"34\",\n    \"productName\": \"Anchor\",\n    \"recommendations\": [\n        {\n            \"rate\": \"2\",\n            \"recommendationId\": 2,\n            \"author\": \"Joseph Stratus\",\n            \"content\": \"No Content\"\n        }\n    ],\n    \"reviews\": [\n        {\n            \"reviewId\": 123,\n            \"author\": \"Craus T2\",\n            \"subject\": \"No Time\",\n            \"content\": \"No Content\"\n        }\n    ]\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:7000/product-composite",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "7000",
-					"path": [
-						"product-composite"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create Recommendation",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"productId\": \"123\",\n  \"recommendationId\": \"1\",\n  \"author\": \"DougDb\",\n  \"rate\": \"3\",\n  \"content\": \"Achor is a good product\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "Create Product Composite",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"productId\": \"123\",\n    \"productWeight\": \"34\",\n    \"productName\": \"Anchor\",\n    \"recommendations\": [\n        {\n            \"rate\": \"2\",\n            \"recommendationId\": 2,\n            \"author\": \"Joseph Stratus\",\n            \"content\": \"No Content\"\n        }\n    ],\n    \"reviews\": [\n        {\n            \"reviewId\": 123,\n            \"author\": \"Craus T2\",\n            \"subject\": \"No Time\",\n            \"content\": \"No Content\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7000/product-composite",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"product-composite"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:7002/recommendation",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "7002",
-					"path": [
-						"recommendation"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create Product",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"productId\": \"1\",\n  \"productName\": \"my-product-1\",\n  \"productWeight\": \"12\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "Create Recommendation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"productId\": \"123\",\n  \"recommendationId\": \"1\",\n  \"author\": \"DougDb\",\n  \"rate\": \"3\",\n  \"content\": \"Achor is a good product\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7002/recommendation",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7002",
+							"path": [
+								"recommendation"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:7001/product",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "7001",
-					"path": [
-						"product"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete Product",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:7001/product/123",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "7001",
-					"path": [
-						"product",
-						"123"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete Recommendation",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:7002/recommendation?productId=123",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "7002",
-					"path": [
-						"recommendation"
-					],
-					"query": [
-						{
-							"key": "productId",
-							"value": "123"
+				{
+					"name": "Create Product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"productId\": \"1\",\n  \"productName\": \"my-product-1\",\n  \"productWeight\": \"12\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7001/product",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7001",
+							"path": [
+								"product"
+							]
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete Product Composite",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:7000/product-composite/123",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "7000",
-					"path": [
-						"product-composite",
-						"123"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get Review",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:7003/review?productId=123",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "7003",
-					"path": [
-						"review"
-					],
-					"query": [
-						{
-							"key": "productId",
-							"value": "123"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create Review",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"productId\": \"1234\",\n  \"reviewId\": \"1234\",\n  \"author\": \"Dougdb\",\n  \"subject\": \"Java v17 new Features\",\n  \"content\": \"Master the new Features of Java 17\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:7003/review",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "7003",
-					"path": [
-						"review"
-					]
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7001/product/123",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7001",
+							"path": [
+								"product",
+								"123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Recommendation",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7002/recommendation?productId=123",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7002",
+							"path": [
+								"recommendation"
+							],
+							"query": [
+								{
+									"key": "productId",
+									"value": "123"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product Composite",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/product-composite/123",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"product-composite",
+								"123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Review",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7003/review?productId=123",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7003",
+							"path": [
+								"review"
+							],
+							"query": [
+								{
+									"key": "productId",
+									"value": "123"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Review",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"productId\": \"1234\",\n  \"reviewId\": \"1234\",\n  \"author\": \"Dougdb\",\n  \"subject\": \"Java v17 new Features\",\n  \"content\": \"Master the new Features of Java 17\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7003/review",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7003",
+							"path": [
+								"review"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Created Product Composite",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/product-composite/123",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"product-composite",
+								"123"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
+		},
+		{
+			"name": "dockerDev-apis",
+			"item": [
+				{
+					"name": "Create Product Composite",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"productId\": \"123\",\n    \"productWeight\": \"34\",\n    \"productName\": \"Anchor\",\n    \"recommendations\": [\n        {\n            \"rate\": \"2\",\n            \"recommendationId\": 2,\n            \"author\": \"Joseph Stratus\",\n            \"content\": \"No Content\"\n        }\n    ],\n    \"reviews\": [\n        {\n            \"reviewId\": 123,\n            \"author\": \"Craus T2\",\n            \"subject\": \"No Time\",\n            \"content\": \"No Content\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/product-composite",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"product-composite"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Created Product Composite",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/product-composite/123",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"product-composite",
+								"123"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
