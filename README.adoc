@@ -15,6 +15,7 @@ IMPORTANT: Links
 . http://localhost:8080/openapi/webjars/swagger-ui/index.html?configUrl=/openapi/v3/api-docs/swagger-config[Product Composite Service OpenAPI Documentation]
 . https://mapstruct.org/[Map Struct]
 . https://stackoverflow.com/questions/47676369/mapstruct-and-lombok-not-working-together[MapStruct and Lombok not working together]
+. https://www.2ndquadrant.com/en/blog/building-reactive-postgresql-repositories-for-spring-boot-applications-part-1/[Building Reactive PostgreSQL Repos]
 
 
 == Introduction to Microservices
@@ -227,12 +228,18 @@ public class ProductAppTests {
 [source,json]
 ----
 {
-    "productId": "123",
+    "productId": 123,
     "productWeight": "34",
     "productName": "Anchor",
     "recommendations": [
         {
             "rate": "2",
+            "recommendationId": 2,
+            "author": "Joseph Stratus",
+            "content": "No Content"
+        },
+        {
+            "rate": "3",
             "recommendationId": 2,
             "author": "Joseph Stratus",
             "content": "No Content"

@@ -1,6 +1,8 @@
 package com.packtpub.microservices.springboot.apis.core.review;
 
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -19,8 +21,9 @@ public interface ReviewService {
    * @param body A JSON representation of the new review
    * @return A JSON representation of the newly created review
    */
-  @PostMapping(value = "/review", consumes = "application/json", produces = "application/json")
-  Review createReview(@RequestBody Review body);
+  //@PostMapping(value = "/review", consumes = "application/json", produces = "application/json")
+  //Review createReview(@RequestBody Review body);
+  Mono<Review> createReview(Review body);
 
 
   /**
@@ -28,14 +31,15 @@ public interface ReviewService {
    * @return the reviews of the product
    */
   @GetMapping(value = "/review", produces = "application/json")
-  List<Review> getReviews(@RequestParam(value = "productId", required = true) int productId);
-
+  //List<Review> getReviews(@RequestParam(value = "productId", required = true) int productId);
+  Flux<Review> getReviews(@RequestParam(value = "productId", required = true) int productId);
 
   /**
    * Sample usage: "curl -X DELETE $HOST:$PORT/review?productId=1".
    *
    * @param productId Id of the product
    */
-  @DeleteMapping(value = "/review")
-  void deleteReviews(@RequestParam(value = "productId", required = true) int productId);
+  //@DeleteMapping(value = "/review")
+  //void deleteReviews(@RequestParam(value = "productId", required = true) int productId);
+  Mono<Void> deleteReviews(int productId);
 }

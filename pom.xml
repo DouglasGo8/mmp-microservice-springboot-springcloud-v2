@@ -12,10 +12,10 @@
   <name>Microservice with Spring Boot and Spring Cloud</name>
 
   <properties>
-    <camel.version>3.11.2</camel.version>
+    <camel.version>3.17.0</camel.version>
     <org.projectlombok>1.18.22</org.projectlombok>
-    <spring.boot-version>2.5.5</spring.boot-version>
-    <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
+    <spring.boot-version>2.6.7</spring.boot-version>
+    <org.mapstruct.version>1.5.1.Final</org.mapstruct.version>
     <surefire.plugin.version>3.0.0-M4</surefire.plugin.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -50,7 +50,6 @@
     </dependencies>
   </dependencyManagement>
 
-
   <dependencies>
     <!-- Spring Boot -->
     <!-- https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.developing-web-applications.spring-webflux -->
@@ -74,6 +73,10 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.kafka</groupId>
+      <artifactId>spring-kafka</artifactId>
+    </dependency>
     <!-- Camel -->
     <dependency>
       <groupId>org.apache.camel.springboot</groupId>
@@ -86,6 +89,14 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-webflux</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel.springboot</groupId>
+      <artifactId>camel-kafka-starter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel.springboot</groupId>
+      <artifactId>camel-jackson-starter</artifactId>
     </dependency>
     <!-- Misc -->
     <dependency>
@@ -137,10 +148,10 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
+        <version>3.10.1</version>
         <configuration>
-          <source>11</source>
-          <target>11</target>
+          <source>17</source>
+          <target>17</target>
           <annotationProcessorPaths>
             <path>
               <groupId>org.projectlombok</groupId>

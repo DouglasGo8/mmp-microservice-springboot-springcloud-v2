@@ -3,14 +3,12 @@ package com.packtpub.microservices.springboot.recommendation.services;
 import com.packtpub.microservices.springboot.apis.core.recommendation.Recommendation;
 import com.packtpub.microservices.springboot.apis.core.recommendation.RecommendationService;
 import com.packtpub.microservices.springboot.apis.exceptions.InvalidInputException;
-import com.packtpub.microservices.springboot.recommendation.dto.RecommendationDto;
+import com.packtpub.microservices.springboot.recommendation.beans.RecommendationBean;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.camel.ProducerTemplate;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
-import java.util.List;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * @author dougdb
@@ -20,45 +18,54 @@ import java.util.List;
 @AllArgsConstructor
 public class RecommendationServiceImpl implements RecommendationService {
 
-  private final ProducerTemplate producerTemplate;
+  // private final ProducerTemplate producerTemplate;
+  private final RecommendationBean recommendation;
 
   @Override
-  public List<Recommendation> getRecommendations(int productId) {
+  public /*List<Recommendation>*/ Flux<Recommendation> getRecommendations(int productId) {
 
     if (productId < 1) {
       throw new InvalidInputException("Invalid productId: " + productId);
     }
 
-    if (productId == 113) {
-      log.info("No recommendations found for productId: {}", productId);
-      return new ArrayList<>();
+    //if (productId == 113) {
+    //  log.info("No recommendations found for productId: {}", productId);
+    //  return new ArrayList<>();
+    //}
+    //var dto = this.producerTemplate
+    //        .requestBody("{{direct.recommendation.mediator.getRecommendations.endpoint}}", productId,
+    //                RecommendationDto.class);
+    //var recommendations = dto.getRecommendations();
+    //log.info("/recommendation response size: {}", recommendations.size());
+    log.info("Will get recommendations for product with id={}", productId);
+
+    return this.recommendation.getRecommendations(productId);
+  }
+
+  @Override
+  public /*Recommendation*/ Mono<Recommendation> createRecommendation(Recommendation body) {
+
+    if (body.getProductId() < 1) {
+      throw new InvalidInputException("Invalid productId: " + body.getProductId());
     }
-
-    var dto = this.producerTemplate
-            .requestBody("{{direct.recommendation.mediator.getRecommendations.endpoint}}", productId,
-                    RecommendationDto.class);
-
-    var recommendations = dto.getRecommendations();
-
-    log.info("/recommendation response size: {}", recommendations.size());
-
-    return recommendations;
+    //
+    //var dto = this.producerTemplate
+    //        .requestBody("{{direct.recommendation.mediator.createRecommendation.endpoint}}", body,
+    //                RecommendationDto.class);
+    //
+    //return dto.getRecommendations().get(0);
+    return this.recommendation.createRecommendation(body);
   }
 
   @Override
-  public Recommendation createRecommendation(Recommendation body) {
-    //
-    var dto = this.producerTemplate
-            .requestBody("{{direct.recommendation.mediator.createRecommendation.endpoint}}", body,
-                    RecommendationDto.class);
-    //
-    return dto.getRecommendations().get(0);
-  }
+  public /*void*/ Mono<Void> deleteRecommendations(int productId) {
+    if (productId < 1) {
+      throw new InvalidInputException("Invalid productId: " + productId);
+    }
+    //this.producerTemplate
+    //        .asyncRequestBody("{{direct.recommendation.mediator.deleteRecommendation.endpoint}}",
+    //                productId);
 
-  @Override
-  public void deleteRecommendations(int productId) {
-    this.producerTemplate
-            .asyncRequestBody("{{direct.recommendation.mediator.deleteRecommendation.endpoint}}",
-                    productId);
+    return this.recommendation.deleteRecommendation(productId);
   }
 }

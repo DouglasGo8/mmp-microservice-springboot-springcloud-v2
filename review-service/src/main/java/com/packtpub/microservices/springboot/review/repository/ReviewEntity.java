@@ -1,28 +1,31 @@
 package com.packtpub.microservices.springboot.review.repository;
 
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * @author dougdb
  */
 @Getter
 @Setter
-@Entity
 @NoArgsConstructor
-@Table(name = "reviews", indexes = {@Index(name = "reviews_unique_idx", unique = true, columnList = "productId,reviewId")})
+@Table(value = "reviews")
+//@Table(name = "reviews", indexes = {@Index(name = "reviews_unique_idx", unique = true, columnList = "productId,reviewId")})
 public class ReviewEntity {
   @Id
-  @GeneratedValue
+  //@GeneratedValue
   private int id;
   @Version
   private int version;
 
+  @Column(value = "productId")
   private int productId;
+  @Column(value = "reviewId")
   private int reviewId;
 
   private String author;

@@ -1,8 +1,7 @@
 package com.packtpub.microservices.springboot.recommendation.routing;
 
 
-import com.packtpub.microservices.springboot.recommendation.beans.RecommendationBean;
-import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.apache.camel.builder.RouteBuilder;
 import org.springframework.stereotype.Component;
 
@@ -10,13 +9,13 @@ import org.springframework.stereotype.Component;
  * @author dougdb
  */
 @Component
-@AllArgsConstructor
-public class RecommendationMediatorRoute extends RouteBuilder {
+@NoArgsConstructor
+public class RecommendationEventConsumerRoute extends RouteBuilder {
 
   @Override
   public void configure() throws Exception {
 
-    from("{{direct.recommendation.mediator.getRecommendations.endpoint}}")
+    /*from("{{direct.recommendation.mediator.getRecommendations.endpoint}}")
             .transform(method(RecommendationBean.class, "getRecommendations"))
             .end();
 
@@ -26,7 +25,7 @@ public class RecommendationMediatorRoute extends RouteBuilder {
 
     from("{{direct.recommendation.mediator.deleteRecommendation.endpoint}}")
             .transform(method(RecommendationBean.class, "deleteRecommendation"))
-            .end();
+            .end();*/
 
   }
 

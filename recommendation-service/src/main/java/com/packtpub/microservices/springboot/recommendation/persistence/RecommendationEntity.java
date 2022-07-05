@@ -26,6 +26,7 @@ public class RecommendationEntity {
   private Integer version;
 
   private int rating;
+
   private int productId;
   private int recommendationId;
 
@@ -40,4 +41,8 @@ public class RecommendationEntity {
     this.content = content;
   }
 
+  @Override
+  public String toString() {
+    return String.format("RecommendationEntity: %s/%d", productId, recommendationId);
+  }
 }
