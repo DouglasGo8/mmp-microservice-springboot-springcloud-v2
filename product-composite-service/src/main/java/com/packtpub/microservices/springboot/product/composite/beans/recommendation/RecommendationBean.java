@@ -14,6 +14,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 
@@ -41,9 +42,9 @@ public class RecommendationBean extends CommonOpsBean {
   }
 
 
-  public ProductAggregateDto getRecommendations(final @Body ProductAggregateDto dto) {
+  public /*ProductAggregateDto*/ Flux<Recommendation> getRecommendations(final /*@Body ProductAggregateDto dto*/ int productId) {
 
-    var productId = dto.getProduct().getProductId();
+    // var productId = dto.getProduct().getProductId();
     var url = String.format("/recommendation?productId=%d", productId);
     //
     var recommendationService = this.recommendationServiceUrl(url);
@@ -53,10 +54,11 @@ public class RecommendationBean extends CommonOpsBean {
     var recommendations = this.restTemplate.exchange(recommendationService,
             HttpMethod.GET, null, new ParameterizedTypeReference<List<Recommendation>>() {
             }).getBody();
-    dto.setRecommendations(recommendations);
+    // dto.setRecommendations(recommendations);
 
     log.info("Found {} reviews for a product with id: {}", recommendations.size(), productId);
-    return dto;
+    // return dto;
+    return null;
   }
 
   public void createRecommendation(final @Body ProductAggregate body) {

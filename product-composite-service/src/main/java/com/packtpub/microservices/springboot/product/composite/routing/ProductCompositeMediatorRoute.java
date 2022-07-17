@@ -50,7 +50,7 @@ public class ProductCompositeMediatorRoute extends RouteBuilder {
             .end();
 
 
-    from("{{direct.product.composite.mediator.endpoint}}")
+    /*from("{{direct.product.composite.mediator.endpoint}}")
             // -------------------------------------------------------
             .circuitBreaker().inheritErrorHandler(true)
               .resilience4jConfiguration().timeoutEnabled(true).timeoutDuration(1000).end()
@@ -91,5 +91,6 @@ public class ProductCompositeMediatorRoute extends RouteBuilder {
                     "bean:recommendationBean?method=deleteRecommendation",
                     "bean:reviewBean?method=deleteReview")
             .end();
+     */
   }
 }

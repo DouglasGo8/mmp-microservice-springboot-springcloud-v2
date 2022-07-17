@@ -4,18 +4,13 @@ package com.packtpub.microservices.springboot.product.composite.beans.review;
 import com.packtpub.microservices.springboot.apis.composite.ProductAggregate;
 import com.packtpub.microservices.springboot.apis.core.review.Review;
 import com.packtpub.microservices.springboot.product.composite.beans.common.CommonOpsBean;
-import com.packtpub.microservices.springboot.product.composite.dto.ProductAggregateDto;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.Body;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
 
 /**
  * @author dougdb
@@ -26,45 +21,48 @@ public class ReviewBean extends CommonOpsBean {
 
   private final String reviewServicePort;
   private final String reviewServiceHost;
-  private final RestTemplate restTemplate;
+  //private final RestTemplate restTemplate;
 
 
   @Autowired
   public ReviewBean(
-          final RestTemplate restTemplate,
+          /*final RestTemplate restTemplate,*/
           @Value("${app.review-service.port}") String reviewServicePort,
           @Value("${app.review-service.host}") String reviewServiceHost) {
-    this.restTemplate = restTemplate;
+    // this.restTemplate = restTemplate;
     //
     this.reviewServicePort = reviewServicePort;
     this.reviewServiceHost = reviewServiceHost;
   }
 
-  public ProductAggregateDto getReviews(final @Body ProductAggregateDto dto) {
+  public /*ProductAggregateDto*/ Flux<Review> getReviews(final /*@Body ProductAggregateDto dto*/ int productId) {
 
-    var productId = dto.getProduct().getProductId();
+    // var productId = dto.getProduct().getProductId();
 
     final var url = String.format("/review?productId=%d", productId);
     final var reviewService = this.reviewServiceUrl(url);
     //
     log.info("Will call getReviews API on URL {}", reviewService);
     //
-    var reviews = this.restTemplate.exchange(reviewService,
-            HttpMethod.GET, null, new ParameterizedTypeReference<List<Review>>() {
-            }).getBody();
-    dto.setReviews(reviews);
+    // var reviews = this.restTemplate.exchange(reviewService,
+    //        HttpMethod.GET, null, new ParameterizedTypeReference<List<Review>>() {
+    //        }).getBody();
+    // dto.setReviews(reviews);
 
-    log.info("Found {} reviews for a product with id: {}", reviews.size(), productId);
-    return dto;
+    // log.info("Found {} reviews for a product with id: {}", reviews.size(), productId);
+
+    //return dto;
+
+    return null;
   }
 
   public void createReview(final @Body ProductAggregate body) {
     try {
       final var reviewService = this.reviewServiceUrl("/review");
       log.info("Will post a new review to URL: {}", reviewService);
-      var review = restTemplate.postForObject(reviewService, body, Review.class);
-      assert review != null;
-      log.info("Created a review with id: {}", review.getProductId());
+      // var review = restTemplate.postForObject(reviewService, body, Review.class);
+      // assert review != null;
+      // log.info("Created a review with id: {}", review.getProductId());
     } catch (HttpClientErrorException ex) {
       throw super.handleHttpClientException(ex);
     }
@@ -73,12 +71,11 @@ public class ReviewBean extends CommonOpsBean {
   public void deleteReview(final @Body int productId) {
     final var reviewService = this.reviewServiceUrl("/review?productId=" + productId);
     log.debug("Will call the deleteReviews API on URL: {}", reviewService);
-    restTemplate.delete(reviewService);
+    //restTemplate.delete(reviewService);
   }
 
   private String reviewServiceUrl(String dynamicUri) {
-    return "http://" + this.reviewServiceHost + ":" +
-            this.reviewServicePort + dynamicUri;
+    return "http://" + this.reviewServiceHost + ":" + this.reviewServicePort + dynamicUri;
 
   }
 }

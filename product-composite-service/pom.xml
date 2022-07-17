@@ -27,6 +27,7 @@
       <artifactId>utils</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
+    <!--
     <dependency>
       <groupId>org.apache.camel.springboot</groupId>
       <artifactId>camel-http-starter</artifactId>
@@ -35,10 +36,20 @@
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-resilience4j</artifactId>
     </dependency>
+    -->
+    <!-- Mac M1 AARCH_64 Dependency -->
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-resolver-dns-native-macos</artifactId>
+      <scope>runtime</scope>
+      <classifier>osx-aarch_64</classifier>
+      <version>4.1.79.Final</version>
+    </dependency>
+
     <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-webflux-ui</artifactId>
-      <version>1.5.12</version>
+      <version>1.6.9</version>
     </dependency>
   </dependencies>
 

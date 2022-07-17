@@ -23,13 +23,12 @@ public class ProductAggregateDto {
     private List<Review> reviews;
     private List<Recommendation> recommendations;
 
-    public ProductAggregateDto(final Product product) {
+    public ProductAggregateDto(final Product product,
+                               final List<Review> reviews,
+                               final List<Recommendation> recommendations) {
+        this.reviews = reviews;
         this.product = product;
-    }
-
-    public ProductAggregateDto(final List<Recommendation> recommendations) {
         this.recommendations = recommendations;
     }
-
 
 }

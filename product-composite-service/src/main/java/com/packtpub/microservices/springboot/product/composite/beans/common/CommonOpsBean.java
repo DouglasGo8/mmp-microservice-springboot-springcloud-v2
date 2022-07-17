@@ -6,6 +6,7 @@ import com.packtpub.microservices.springboot.apis.exceptions.NotFoundException;
 import com.packtpub.microservices.springboot.utils.http.HttpErrorInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -36,7 +37,39 @@ public abstract class CommonOpsBean {
     }
   }
 
-  protected String getErrorMessage(HttpClientErrorException ex) {
+  protected Throwable handleHttpClientException(Throwable ex) {
+
+    if (!(ex instanceof WebClientResponseException)) {
+      log.warn("Got a unexpected error: {}, will rethrow it", ex.toString());
+      return ex;
+    }
+
+    WebClientResponseException wcre = (WebClientResponseException)ex;
+
+    switch (wcre.getStatusCode()) {
+
+      case NOT_FOUND:
+        return new NotFoundException(getErrorMessage(wcre));
+
+      case UNPROCESSABLE_ENTITY :
+        return new InvalidInputException(getErrorMessage(wcre));
+
+      default:
+        log.warn("Got an unexpected HTTP error: {}, will rethrow it", wcre.getStatusCode());
+        log.warn("Error body: {}", wcre.getResponseBodyAsString());
+        return ex;
+    }
+  }
+
+  private String getErrorMessage(HttpClientErrorException ex) {
+    try {
+      return mapper.readValue(ex.getResponseBodyAsString(), HttpErrorInfo.class).getMessage();
+    } catch (IOException ioex) {
+      return ex.getMessage();
+    }
+  }
+
+  private String getErrorMessage(WebClientResponseException ex) {
     try {
       return mapper.readValue(ex.getResponseBodyAsString(), HttpErrorInfo.class).getMessage();
     } catch (IOException ioex) {

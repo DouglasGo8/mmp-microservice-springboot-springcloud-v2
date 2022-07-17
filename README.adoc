@@ -16,6 +16,7 @@ IMPORTANT: Links
 . https://mapstruct.org/[Map Struct]
 . https://stackoverflow.com/questions/47676369/mapstruct-and-lombok-not-working-together[MapStruct and Lombok not working together]
 . https://www.2ndquadrant.com/en/blog/building-reactive-postgresql-repositories-for-spring-boot-applications-part-1/[Building Reactive PostgreSQL Repos]
+. https://stackoverflow.com/questions/71966221/spring-api-gateway-m1-java-lang-unsatisfiedlinkerror-no-netty-resolver-dns-n[Spring Boot Netty UnsatisfiedLinkError macOS M1 Netty]
 
 
 == Introduction to Microservices
