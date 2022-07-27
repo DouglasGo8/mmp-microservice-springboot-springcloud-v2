@@ -64,7 +64,7 @@ public class ProductBean {
    * @param product to be Saved
    * @return mapped ProductDto
    */
-  public /*ProductDto*/ Mono<Product> createProduct(/*@Body*/ Product product) {
+  public /*ProductDto*/ Mono<Product> createProduct(@Body Product product) {
 
     log.info("createProduct fired_2={}", product);
     //

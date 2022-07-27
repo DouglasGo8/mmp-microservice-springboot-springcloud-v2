@@ -17,6 +17,9 @@ IMPORTANT: Links
 . https://stackoverflow.com/questions/47676369/mapstruct-and-lombok-not-working-together[MapStruct and Lombok not working together]
 . https://www.2ndquadrant.com/en/blog/building-reactive-postgresql-repositories-for-spring-boot-applications-part-1/[Building Reactive PostgreSQL Repos]
 . https://stackoverflow.com/questions/71966221/spring-api-gateway-m1-java-lang-unsatisfiedlinkerror-no-netty-resolver-dns-n[Spring Boot Netty UnsatisfiedLinkError macOS M1 Netty]
+. https://spring.io/blog/2019/12/13/flight-of-the-flux-3-hopping-threads-and-schedulers[Flight of the Flux 3 - Hopping Threads and Schedulers]
+. https://stackoverflow.com/questions/70210647/apple-m1-cant-start-the-confluent-control-center-using-docker[Confluent Kafka platform enabled to Mac M1]
+. https://stackoverflow.com/questions/71707903/org-xerial-snappy-snappyerror-failed-to-load-native-library-no-native-library[Mac M1 Snappy Lib kafka Producer Error Fixed]
 
 
 == Introduction to Microservices

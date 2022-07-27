@@ -11,9 +11,11 @@ import com.packtpub.microservices.springboot.product.composite.dto.ProductAggreg
 import com.packtpub.microservices.springboot.utils.http.ServiceUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.camel.ProducerTemplate;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +32,7 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
   private final RecommendationBean recommendationBean;
 
   private final ServiceUtil serviceUtil;
+  //
   // private final ProducerTemplate producerTemplate;
 
   @Override
@@ -43,7 +46,7 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
 
     //log.info("{}", productBean.getProduct(productId).block().getProductName());
 
-    Mono.zip(values -> this.createProductAggregate(new ProductAggregateDto(
+    return Mono.zip(values -> this.createProductAggregate(new ProductAggregateDto(
                     //
                     // Get result indexed by Position in Aggregate result
                     (Product) values[0],
@@ -55,7 +58,7 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
             this.reviewBean.getReviews(productId).collectList(),
             this.recommendationBean.getRecommendations(productId).collectList());
 
-    return null;
+    // return null;
   }
 
   @Override
@@ -63,7 +66,24 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
     log.debug("createCompositeProduct: creates a new composite entity for productId: {}", body.getProductId());
     //this.producerTemplate.asyncSendBody("{{seda.product.create.composite.mediator.endpoint}}", body);
 
-    return null;
+    var monoList = new ArrayList<Mono>();
+
+    try {
+      // product
+      var product = new Product(body.getProductId(), body.getProductWeight(),
+              body.getProductName(), null);
+
+      monoList.add(productBean.createProduct(product));
+
+    } catch (RuntimeException ex) {
+      log.warn("createCompositeProduct failed: {}", ex.toString());
+      throw ex;
+    }
+    //
+    log.debug("createCompositeProduct: composite entities created for productId: {}", body.getProductId());
+    //
+    return Mono.zip(r -> "", monoList.toArray(new Mono[0]))
+            .doOnError(ex -> log.warn("createCompositeProduct failed: {}", ex.toString())).then();
   }
 
   @Override

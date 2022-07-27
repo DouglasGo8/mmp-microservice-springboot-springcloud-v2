@@ -15,7 +15,7 @@ import static java.time.ZonedDateTime.now;
  */
 public class Event<K, T> {
 
-  enum Type {CREATE, DELETE}
+  public enum Type {CREATE, DELETE}
 
   @Getter
   private final K key;

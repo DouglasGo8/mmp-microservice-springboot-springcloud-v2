@@ -1,34 +1,25 @@
 package com.packtpub.microservices.springboot.product.composite.routing;
 
 
-import com.packtpub.microservices.springboot.apis.exceptions.CriticalInvocationException;
-import com.packtpub.microservices.springboot.apis.exceptions.InvalidInputException;
-import com.packtpub.microservices.springboot.apis.exceptions.NotFoundException;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.camel.Exchange;
-import org.apache.camel.ExchangePattern;
+import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.component.kafka.KafkaConstants;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.ResourceAccessException;
-
-import java.net.UnknownHostException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeoutException;
 
 /**
  * @author dougdb
  */
 @Slf4j
 @Component
+@NoArgsConstructor
 public class ProductCompositeMediatorRoute extends RouteBuilder {
 
-
   @Override
-  @SuppressWarnings({"unchecked"})
   public void configure() {
 
-    onException(HttpClientErrorException.class)
+   /* onException(HttpClientErrorException.class)
             .continued(false) // ::false:: is default, here only demonstration purpose
             .process(e -> {
               final var exception = e.getProperty(Exchange.EXCEPTION_CAUGHT,
@@ -47,8 +38,7 @@ public class ProductCompositeMediatorRoute extends RouteBuilder {
 
     onException(ResourceAccessException.class, TimeoutException.class, UnknownHostException.class)
             .throwException(new CriticalInvocationException("::CRITICAL FAIL:: POSSIBLE_SERVICE_DOWN!!!"))
-            .end();
-
+            .end();*/
 
     /*from("{{direct.product.composite.mediator.endpoint}}")
             // -------------------------------------------------------
@@ -70,7 +60,6 @@ public class ProductCompositeMediatorRoute extends RouteBuilder {
             // .log("${body}")
             .end();
 
-
     from("{{seda.product.create.composite.mediator.endpoint}}")
             .log("Creating Product ${body} - ${threadName}")
             .multicast().streaming()
@@ -80,7 +69,6 @@ public class ProductCompositeMediatorRoute extends RouteBuilder {
                     "bean:recommendationBean?method=createRecommendation",
                     "bean:reviewBean?method=createReview")
             .end();
-
 
     from("{{seda.product.delete.composite.mediator.endpoint}}")
             .log("Deleting Product${body} - ${threadName}")
@@ -92,5 +80,12 @@ public class ProductCompositeMediatorRoute extends RouteBuilder {
                     "bean:reviewBean?method=deleteReview")
             .end();
      */
+
+    from("{{seda.event.kafka.create.product}}")
+            .log(LoggingLevel.DEBUG, "Sending a ${body.getEventType()} message to Kafka")
+            .setHeader(KafkaConstants.KEY, simple("${body.getKey()}"))
+            .to("{{kafka.topic.products.endpoint}}");
+
+
   }
 }

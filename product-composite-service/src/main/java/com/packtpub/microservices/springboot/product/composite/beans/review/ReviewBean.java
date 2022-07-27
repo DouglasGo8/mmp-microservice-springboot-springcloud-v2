@@ -1,6 +1,6 @@
 package com.packtpub.microservices.springboot.product.composite.beans.review;
 
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.packtpub.microservices.springboot.apis.composite.ProductAggregate;
 import com.packtpub.microservices.springboot.apis.core.review.Review;
 import com.packtpub.microservices.springboot.product.composite.beans.common.CommonOpsBean;
@@ -10,8 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
+import java.util.logging.Level;
+import static reactor.core.publisher.Flux.empty;
 /**
  * @author dougdb
  */
@@ -19,6 +22,7 @@ import reactor.core.publisher.Flux;
 @Component
 public class ReviewBean extends CommonOpsBean {
 
+  private final WebClient webClient;
   private final String reviewServicePort;
   private final String reviewServiceHost;
   //private final RestTemplate restTemplate;
@@ -27,10 +31,14 @@ public class ReviewBean extends CommonOpsBean {
   @Autowired
   public ReviewBean(
           /*final RestTemplate restTemplate,*/
+          ObjectMapper mapper,
+          WebClient.Builder webClient,
           @Value("${app.review-service.port}") String reviewServicePort,
           @Value("${app.review-service.host}") String reviewServiceHost) {
     // this.restTemplate = restTemplate;
     //
+    super(mapper);
+    this.webClient = webClient.build();
     this.reviewServicePort = reviewServicePort;
     this.reviewServiceHost = reviewServiceHost;
   }
@@ -39,10 +47,10 @@ public class ReviewBean extends CommonOpsBean {
 
     // var productId = dto.getProduct().getProductId();
 
-    final var url = String.format("/review?productId=%d", productId);
-    final var reviewService = this.reviewServiceUrl(url);
+    final var partialUrl = String.format("/review?productId=%d", productId);
+    final var reviewServiceUri = this.reviewServiceUrl(partialUrl);
     //
-    log.info("Will call getReviews API on URL {}", reviewService);
+    log.info("Will call getReviews API on URL {}", reviewServiceUri);
     //
     // var reviews = this.restTemplate.exchange(reviewService,
     //        HttpMethod.GET, null, new ParameterizedTypeReference<List<Review>>() {
@@ -53,7 +61,10 @@ public class ReviewBean extends CommonOpsBean {
 
     //return dto;
 
-    return null;
+    return this.webClient.get().uri(reviewServiceUri)
+            .retrieve().bodyToFlux(Review.class)
+            .log(log.getName(), Level.FINE)
+            .onErrorResume(err -> empty());
   }
 
   public void createReview(final @Body ProductAggregate body) {
