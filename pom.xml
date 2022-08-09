@@ -12,9 +12,9 @@
   <name>Microservice with Spring Boot and Spring Cloud</name>
 
   <properties>
-    <camel.version>3.17.0</camel.version>
+    <camel.version>3.18.0</camel.version>
     <org.projectlombok>1.18.22</org.projectlombok>
-    <spring.boot-version>2.6.7</spring.boot-version>
+    <spring.boot-version>2.7.1</spring.boot-version>
     <org.mapstruct.version>1.5.1.Final</org.mapstruct.version>
     <surefire.plugin.version>3.0.0-M4</surefire.plugin.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

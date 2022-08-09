@@ -1,8 +1,12 @@
 package com.packtpub.microservices.springboot.product.routing;
 
 
+import com.packtpub.microservices.springboot.apis.core.product.Product;
+import com.packtpub.microservices.springboot.apis.core.product.ProductService;
 import lombok.NoArgsConstructor;
+import org.apache.camel.ExchangePattern;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.model.dataformat.JsonLibrary;
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,6 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 @NoArgsConstructor
 public class ProductEventConsumerRoute extends RouteBuilder {
+
 
   @Override
   public void configure() {
@@ -34,7 +39,23 @@ public class ProductEventConsumerRoute extends RouteBuilder {
     //        .to("direct:bla")
     //        .end();
 
-
+    from("{{kafka.topic.products.endpoint}}")
+            .choice()
+            .when(simple("${body.getEventType()} == 'CREATE'"))
+              .to(ExchangePattern.InOut,"direct:processProductEvent")
+              .bean(ProductService.class, "createProduct")
+            .when(simple("${body.getEventType()} == 'DELETE'"))
+              .to(ExchangePattern.InOut,"direct:processProductEvent")
+              .transform(simple("${body.getProductId()}"))
+              .bean(ProductService.class, "deleteProduct")
+            .end();
+    //
+    from("direct:processProductEvent")
+            .transform(simple("${body.getData()}"))
+            .marshal().json(JsonLibrary.Jackson)
+            .log("${body}")
+            // insert on MongoDb
+            .unmarshal().json(Product.class);
 
   }
 }

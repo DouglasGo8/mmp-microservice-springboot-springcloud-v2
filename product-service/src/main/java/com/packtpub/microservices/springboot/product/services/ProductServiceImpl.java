@@ -8,6 +8,10 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
+
+import java.time.Duration;
 
 /**
  * @author dougdb
@@ -34,8 +38,10 @@ public class ProductServiceImpl implements ProductService {
     if (product.getProductId() < 1) {
       throw new InvalidInputException("Invalid productId: " + product.getProductId());
     }
-
-    return this.productBean.createProduct(product);
+    // Not recommended
+    this.productBean.createProduct(product).block();
+    //
+    return Mono.empty();
   }
 
   @Override

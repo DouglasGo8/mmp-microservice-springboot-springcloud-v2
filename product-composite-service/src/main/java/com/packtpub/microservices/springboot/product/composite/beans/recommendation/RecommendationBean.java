@@ -4,6 +4,7 @@ package com.packtpub.microservices.springboot.product.composite.beans.recommenda
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.packtpub.microservices.springboot.apis.composite.ProductAggregate;
 import com.packtpub.microservices.springboot.apis.core.recommendation.Recommendation;
+import com.packtpub.microservices.springboot.apis.event.Event;
 import com.packtpub.microservices.springboot.product.composite.beans.common.CommonOpsBean;
 import com.packtpub.microservices.springboot.product.composite.dto.ProductAggregateDto;
 import lombok.extern.slf4j.Slf4j;
@@ -18,10 +19,14 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.List;
 import java.util.logging.Level;
+
 import static reactor.core.publisher.Flux.empty;
+
 /**
  * @author dougdb
  */
@@ -33,18 +38,21 @@ public class RecommendationBean extends CommonOpsBean {
   private final String recommendationServicePort;
   private final String recommendationServiceHost;
   // private final RestTemplate restTemplate;
+  private final ProducerTemplate template;
 
   @Autowired
   public RecommendationBean(
           /*final RestTemplate restTemplate,*/
           ObjectMapper mapper,
           WebClient.Builder webClient,
+          ProducerTemplate template,
           @Value("${app.recommendation-service.port}") String recommendationServicePort,
           @Value("${app.recommendation-service.host}") String recommendationServiceHost) {
 
     //this.restTemplate = restTemplate;
     super(mapper);
     //
+    this.template = template;
     this.webClient = webClient.build();
     this.recommendationServicePort = recommendationServicePort;
     this.recommendationServiceHost = recommendationServiceHost;
@@ -71,10 +79,10 @@ public class RecommendationBean extends CommonOpsBean {
             .onErrorResume(err -> empty());
   }
 
-  public void createRecommendation(final @Body ProductAggregate body) {
+  public /*void*/ Mono<Recommendation> createRecommendation(final /*@Body ProductAggregate*/ Recommendation body) {
     try {
       //
-      if (null != body.getRecommendations()) {
+      /*if (null != body.getRecommendations()) {
         var recommendationService = this.recommendationServiceUrl("/recommendation");
         log.info("Will post a new recommendation to URL: {}", recommendationService);
         //
@@ -86,7 +94,13 @@ public class RecommendationBean extends CommonOpsBean {
           //assert recommendationCreated != null;
           //log.debug("Created a recommendation with id: {}", recommendationCreated.getProductId());
         });
-      }
+      }*/
+      log.debug("create Recommendation: for productId: {}", body.getProductId());
+      var event = new Event<>(Event.Type.CREATE, body.getProductId(), body);
+      this.template.asyncRequestBody("{{seda.event.kafka.create.recommendation}}", event);
+      //
+      return Mono.just(body).subscribeOn(Schedulers.single());
+      //
     } catch (HttpClientErrorException ex) {
       throw super.handleHttpClientException(ex);
     }

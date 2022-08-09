@@ -70,10 +70,21 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
 
     try {
       // product
-      var product = new Product(body.getProductId(), body.getProductWeight(),
-              body.getProductName(), null);
+      //var product = new Product(body.getProductId(), body.getProductWeight(),
+      //         body.getProductName(), null);
 
-      monoList.add(productBean.createProduct(product));
+      //monoList.add(productBean.createProduct(product));
+
+      if (null != body.getRecommendations()) {
+        body.getRecommendations().forEach(r -> {
+          var recommendation = new Recommendation(r.getRate(),
+                  body.getProductId(),
+                  r.getRecommendationId(),
+                  r.getAuthor(),
+                  r.getContent(), null);
+          monoList.add(recommendationBean.createRecommendation(recommendation));
+        });
+      }
 
     } catch (RuntimeException ex) {
       log.warn("createCompositeProduct failed: {}", ex.toString());
