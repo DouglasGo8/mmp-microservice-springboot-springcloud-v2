@@ -97,7 +97,7 @@ public class RecommendationBean extends CommonOpsBean {
       }*/
       log.debug("create Recommendation: for productId: {}", body.getProductId());
       var event = new Event<>(Event.Type.CREATE, body.getProductId(), body);
-      this.template.asyncRequestBody("{{seda.event.kafka.create.recommendation}}", event);
+      this.template.asyncSendBody("{{seda.event.kafka.create.recommendation}}", event);
       //
       return Mono.just(body).subscribeOn(Schedulers.single());
       //

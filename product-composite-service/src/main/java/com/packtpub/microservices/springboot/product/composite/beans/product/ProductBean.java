@@ -79,7 +79,7 @@ public class ProductBean extends CommonOpsBean {
       // assert product != null;
       // log.debug("Created a product with id: {}", product.getProductId());
       var event = new Event<>(Event.Type.CREATE, productToInsert.getProductId(), productToInsert);
-      this.template.asyncRequestBody("{{seda.event.kafka.create.product}}", event);
+      this.template.asyncSendBody("{{seda.event.kafka.create.product}}", event);
       //
       return Mono.just(body).subscribeOn(Schedulers.single());
       //
