@@ -47,7 +47,7 @@ public class ProductEventConsumerRoute extends RouteBuilder {
             .when(simple("${body.getEventType()} == 'DELETE'"))
               .to(ExchangePattern.InOut,"direct:processProductEvent")
               .transform(simple("${body.getProductId()}"))
-              .bean(ProductService.class, "deleteProduct")
+              //.bean(ProductService.class, "deleteProduct")
             .end();
     //
     from("direct:processProductEvent")

@@ -1,19 +1,23 @@
 package com.packtpub.microservices.springboot.product.composite.beans.review;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.packtpub.microservices.springboot.apis.composite.ProductAggregate;
 import com.packtpub.microservices.springboot.apis.core.review.Review;
+import com.packtpub.microservices.springboot.apis.event.Event;
 import com.packtpub.microservices.springboot.product.composite.beans.common.CommonOpsBean;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.Body;
+import org.apache.camel.ProducerTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.logging.Level;
+
 import static reactor.core.publisher.Flux.empty;
 /**
  * @author dougdb
@@ -26,18 +30,21 @@ public class ReviewBean extends CommonOpsBean {
   private final String reviewServicePort;
   private final String reviewServiceHost;
   //private final RestTemplate restTemplate;
+  private final ProducerTemplate template;
 
 
   @Autowired
   public ReviewBean(
           /*final RestTemplate restTemplate,*/
           ObjectMapper mapper,
+          ProducerTemplate template,
           WebClient.Builder webClient,
           @Value("${app.review-service.port}") String reviewServicePort,
           @Value("${app.review-service.host}") String reviewServiceHost) {
     // this.restTemplate = restTemplate;
     //
     super(mapper);
+    this.template = template;
     this.webClient = webClient.build();
     this.reviewServicePort = reviewServicePort;
     this.reviewServiceHost = reviewServiceHost;
@@ -67,13 +74,20 @@ public class ReviewBean extends CommonOpsBean {
             .onErrorResume(err -> empty());
   }
 
-  public void createReview(final @Body ProductAggregate body) {
+  public /*void*/ Mono<Review> createReview(final /*@Body ProductAggregate*/ Review body) {
     try {
-      final var reviewService = this.reviewServiceUrl("/review");
-      log.info("Will post a new review to URL: {}", reviewService);
+      //final var reviewService = this.reviewServiceUrl("/review");
+      //log.info("Will post a new review to URL: {}", reviewService);
+      log.info("Review to send {}", body);
       // var review = restTemplate.postForObject(reviewService, body, Review.class);
       // assert review != null;
       // log.info("Created a review with id: {}", review.getProductId());
+
+      var event = new Event<>(Event.Type.CREATE, body.getProductId(), body);
+      this.template.asyncSendBody("{{seda.event.kafka.create.review}}", event);
+      //
+      return Mono.just(body).subscribeOn(Schedulers.single());
+
     } catch (HttpClientErrorException ex) {
       throw super.handleHttpClientException(ex);
     }

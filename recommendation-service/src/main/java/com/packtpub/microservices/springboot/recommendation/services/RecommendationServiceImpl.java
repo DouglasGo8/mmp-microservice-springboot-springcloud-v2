@@ -54,7 +54,9 @@ public class RecommendationServiceImpl implements RecommendationService {
     //                RecommendationDto.class);
     //
     //return dto.getRecommendations().get(0);
-    return this.recommendation.createRecommendation(body);
+    this.recommendation.createRecommendation(body).block();
+    //
+    return Mono.empty();
   }
 
   @Override

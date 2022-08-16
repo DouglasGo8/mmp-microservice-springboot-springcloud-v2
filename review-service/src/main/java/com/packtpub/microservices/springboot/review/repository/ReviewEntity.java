@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Version;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -17,19 +16,20 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table(value = "reviews")
 //@Table(name = "reviews", indexes = {@Index(name = "reviews_unique_idx", unique = true, columnList = "productId,reviewId")})
 public class ReviewEntity {
+
   @Id
-  //@GeneratedValue
   private int id;
-  @Version
-  private int version;
+
+  //@Version
+  //private int version;
 
   @Column(value = "productId")
   private int productId;
   @Column(value = "reviewId")
   private int reviewId;
 
-  private String author;
-  private String subject;
+    private String author;
+    private String subject;
   private String content;
 
 

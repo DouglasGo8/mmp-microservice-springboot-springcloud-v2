@@ -28,7 +28,9 @@ public class ReviewServiceImpl implements ReviewService {
     }
     //return this.producerTemplate
     //        .requestBody("{{direct.createReview.mediator.endpoint}}", body, Review.class);
-    return this.review.createReview(body);
+    this.review.createReview(body).block();
+    //
+    return Mono.empty();
   }
 
   @Override

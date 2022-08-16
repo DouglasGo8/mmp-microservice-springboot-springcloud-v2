@@ -70,10 +70,10 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
 
     try {
       // product
-      //var product = new Product(body.getProductId(), body.getProductWeight(),
-      //         body.getProductName(), null);
+      var product = new Product(body.getProductId(), body.getProductWeight(),
+              body.getProductName(), null);
 
-      //monoList.add(productBean.createProduct(product));
+      monoList.add(productBean.createProduct(product));
 
       if (null != body.getRecommendations()) {
         body.getRecommendations().forEach(r -> {
@@ -83,6 +83,16 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
                   r.getAuthor(),
                   r.getContent(), null);
           monoList.add(recommendationBean.createRecommendation(recommendation));
+        });
+      }
+
+      if (null != body.getReviews()) {
+        body.getReviews().forEach(r -> {
+          var review = new Review(body.getProductId(), r.getReviewId(),
+                  r.getAuthor(), r.getSubject(), r.getContent(),
+                  null);
+
+          monoList.add(reviewBean.createReview(review));
         });
       }
 
