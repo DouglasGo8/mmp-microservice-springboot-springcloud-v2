@@ -84,7 +84,7 @@ public class ReviewBean extends CommonOpsBean {
       // log.info("Created a review with id: {}", review.getProductId());
 
       var event = new Event<>(Event.Type.CREATE, body.getProductId(), body);
-      this.template.asyncSendBody("{{seda.event.kafka.create.review}}", event);
+      this.template.asyncSendBody("{{seda.event.kafka.review}}", event);
       //
       return Mono.just(body).subscribeOn(Schedulers.single());
 
@@ -93,14 +93,18 @@ public class ReviewBean extends CommonOpsBean {
     }
   }
 
-  public void deleteReview(final @Body int productId) {
-    final var reviewService = this.reviewServiceUrl("/review?productId=" + productId);
-    log.debug("Will call the deleteReviews API on URL: {}", reviewService);
+  public /*void*/ Mono<Void> deleteReview(final @Body int productId) {
+    //final var reviewService = this.reviewServiceUrl("/review?productId=" + productId);
+    //log.debug("Will call the deleteReviews API on URL: {}", reviewService);
     //restTemplate.delete(reviewService);
+    log.info("Review with id {} will be deleted", productId);
+    var event = new Event<>(Event.Type.DELETE, productId, null);
+    this.template.asyncSendBody("{{seda.event.kafka.review}}", event);
+    //
+    return Mono.just(productId).subscribeOn(Schedulers.single()).then();
   }
 
   private String reviewServiceUrl(String dynamicUri) {
     return "http://" + this.reviewServiceHost + ":" + this.reviewServicePort + dynamicUri;
-
   }
 }

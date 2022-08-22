@@ -79,7 +79,7 @@ public class ProductBean extends CommonOpsBean {
       // assert product != null;
       // log.debug("Created a product with id: {}", product.getProductId());
       var event = new Event<>(Event.Type.CREATE, productToInsert.getProductId(), productToInsert);
-      this.template.asyncSendBody("{{seda.event.kafka.create.product}}", event);
+      this.template.asyncSendBody("{{seda.event.kafka.product}}", event);
       //
       return Mono.just(body).subscribeOn(Schedulers.single());
       //
@@ -88,14 +88,19 @@ public class ProductBean extends CommonOpsBean {
     }
   }
 
-  public void deleteProduct(final @Body int productId) {
-    try {
-      final var productService = this.productServiceUrl("/product/" + productId);
-      log.info("Will post a new product to URL: {}", productService);
+  public /*void*/ Mono<Void> deleteProduct(final @Body int productId) {
+    //try {
+      // final var productService = this.productServiceUrl("/product/" + productId);
+      // log.info("Will post a new product to URL: {}", productService);
+      log.info("Product with id {} will be deleted", productId);
+      var event = new Event<>(Event.Type.DELETE, productId, null);
+      this.template.asyncSendBody("{{seda.event.kafka.product}}", event);
+      //
+      return Mono.just(productId).subscribeOn(Schedulers.single()).then();
       // this.restTemplate.delete(productService);
-    } catch (HttpClientErrorException ex) {
-      throw super.handleHttpClientException(ex);
-    }
+    //} catch (HttpClientErrorException ex) {
+    // throw super.handleHttpClientException(ex);
+    //}
   }
 
   private String productServiceUrl(String dynamicUri) {

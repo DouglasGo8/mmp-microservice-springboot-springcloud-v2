@@ -97,7 +97,7 @@ public class RecommendationBean extends CommonOpsBean {
       }*/
       log.debug("create Recommendation: for productId: {}", body.getProductId());
       var event = new Event<>(Event.Type.CREATE, body.getProductId(), body);
-      this.template.asyncSendBody("{{seda.event.kafka.create.recommendation}}", event);
+      this.template.asyncSendBody("{{seda.event.kafka.recommendation}}", event);
       //
       return Mono.just(body).subscribeOn(Schedulers.single());
       //
@@ -106,12 +106,16 @@ public class RecommendationBean extends CommonOpsBean {
     }
   }
 
-  public void deleteRecommendation(final @Body int productId) {
+  public /*void*/ Mono<Void> deleteRecommendation(final /*@Body*/ int productId) {
     try {
-      var url = this.recommendationServiceUrl("/recommendation?productId=" + productId);
-      log.debug("Will call the deleteRecommendations API on URL: {}", url);
+      //var url = this.recommendationServiceUrl("/recommendation?productId=" + productId);
+      //log.debug("Will call the deleteRecommendations API on URL: {}", url);
       //restTemplate.delete(url);
-
+      log.info("Recommendation with id {} will be deleted", productId);
+      var event = new Event<>(Event.Type.DELETE, productId, null);
+      this.template.asyncSendBody("{{seda.event.kafka.recommendation}}", event);
+      //
+      return Mono.just(productId).subscribeOn(Schedulers.single()).then();
     } catch (HttpClientErrorException ex) {
       throw handleHttpClientException(ex);
     }

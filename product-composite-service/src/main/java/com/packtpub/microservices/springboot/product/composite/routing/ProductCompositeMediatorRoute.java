@@ -81,19 +81,25 @@ public class ProductCompositeMediatorRoute extends RouteBuilder {
             .end();
      */
 
-    from("{{seda.event.kafka.create.product}}")
-            .log(LoggingLevel.INFO, "Sending a ${body.getEventType()} message to Kafka")
+    from("{{seda.event.kafka.product}}")
+            .log(LoggingLevel.INFO, "Sending a Product ${body.getEventType()} message to Kafka")
             .setHeader(KafkaConstants.KEY, simple("${body.getKey()}"))
             .to("{{kafka.topic.products.endpoint}}");
 
-    from("{{seda.event.kafka.create.recommendation}}")
-            .log(LoggingLevel.INFO, "Sending a ${body.getEventType()} message to Kafka")
+    from("{{seda.event.kafka.review}}")
+            .log(LoggingLevel.INFO, "Sending a Review ${body.getEventType()} message to Kafka")
+            .setHeader(KafkaConstants.KEY, simple("${body.getKey()}"))
+            .to("{{kafka.topic.reviews.endpoint}}");
+
+    from("{{seda.event.kafka.recommendation}}")
+            .log(LoggingLevel.INFO, "Sending a Recommendation ${body.getEventType()} message to Kafka")
             .setHeader(KafkaConstants.KEY, simple("${body.getKey()}"))
             .to("{{kafka.topic.recommendations.endpoint}}");
 
-    from("{{seda.event.kafka.create.review}}")
-            .log(LoggingLevel.INFO, "Sending a ${body.getEventType()} message to Kafka")
-            .setHeader(KafkaConstants.KEY, simple("${body.getKey()}"))
-            .to("{{kafka.topic.reviews.endpoint}}");
+
+
+    //
+
+
   }
 }

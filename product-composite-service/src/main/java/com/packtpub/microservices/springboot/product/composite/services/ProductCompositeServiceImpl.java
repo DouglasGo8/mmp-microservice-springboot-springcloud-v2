@@ -17,6 +17,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 /**
@@ -111,8 +112,13 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
   public /*void*/ Mono<Void> deleteProduct(int productId) {
     log.debug("deleteCompositeProduct: Deletes a product aggregate for productId: {}", productId);
     // this.producerTemplate.asyncSendBody("{{seda.product.delete.composite.mediator.endpoint}}", productId);
-    log.debug("deleteCompositeProduct: aggregate entities deleted for productId: {}", productId);
-    return null;
+    //log.debug("deleteCompositeProduct: aggregate entities deleted for productId: {}", productId);
+    return Mono.zip(r -> "", productBean.deleteProduct(productId),
+                    recommendationBean.deleteRecommendation(productId),
+                    reviewBean.deleteReview(productId))
+            .doOnError(ex -> log.warn("delete failed: {}", ex.toString()))
+            .log(log.getName(), Level.FINE)
+            .then();
   }
 
 
